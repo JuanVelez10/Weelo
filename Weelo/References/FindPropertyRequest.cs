@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using WeeloCore.Helpers;
+using static WeeloCore.Helpers.EnumType;
+
+namespace WeeloAPI.References
+{
+    public class FindPropertyRequest : IValidatableObject
+    {
+        private Tools tools = new Tools();
+        public Guid? IdCity { get; set; }
+        public Guid? IdZone { get; set; }
+        public int YearMin { get; set; }
+        public int YearMax { get; set; } = DateTime.Now.Year;
+        public decimal PriceMin { get; set; }
+        public decimal PriceMax { get; set; }
+        public int RoomsMin { get; set; }
+        public int RoomsMax { get; set; }
+        public PropertyType PropertyType { get; set; } = PropertyType.None;
+        public ConditionType ConditionType { get; set; } = ConditionType.None;
+        public SecurityType SecurityType { get; set; } = SecurityType.None;
+        public AreaType AreaType { get; set; } = AreaType.None;
+        public WithFurnished WithFurnished { get; set; } = WithFurnished.Both;
+        public WithGarages WithGarages { get; set; } = WithGarages.Both;
+        public WithSwimmingPool WithSwimmingPool { get; set; } = WithSwimmingPool.Both;
+        public WithGym WithGym { get; set; } = WithGym.Both;
+        public WithOceanfront WithOceanfront { get; set; } = WithOceanfront.Both;
+        public OrderProperty OrderProperty { get; set; } = OrderProperty.None;
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!IdCity.HasValue) yield return new ValidationResult(tools.GetMessage(4, MessageType.Error), new[] { nameof(IdCity) });
+            if (PriceMin > PriceMax) yield return new ValidationResult(tools.GetMessage(2,MessageType.Error), new[] { nameof(PriceMin), nameof(PriceMax) });
+            if (YearMin > YearMax) yield return new ValidationResult(tools.GetMessage(2, MessageType.Error), new[] { nameof(YearMin), nameof(YearMax) });
+            if (RoomsMin > RoomsMax) yield return new ValidationResult(tools.GetMessage(2, MessageType.Error), new[] { nameof(RoomsMin), nameof(RoomsMax) });
+            if (!Enum.IsDefined(typeof(PropertyType), PropertyType)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(PropertyType) });
+            if (!Enum.IsDefined(typeof(ConditionType), ConditionType)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(ConditionType) });
+            if (!Enum.IsDefined(typeof(SecurityType), SecurityType)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(SecurityType) });
+            if (!Enum.IsDefined(typeof(AreaType), AreaType)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(AreaType) });
+            if (!Enum.IsDefined(typeof(WithFurnished), WithFurnished)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithFurnished) });
+            if (!Enum.IsDefined(typeof(WithGarages), WithGarages)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithGarages) });
+            if (!Enum.IsDefined(typeof(WithSwimmingPool), WithSwimmingPool)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithSwimmingPool) });
+            if (!Enum.IsDefined(typeof(WithGym), WithGym)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithGym) });
+            if (!Enum.IsDefined(typeof(WithOceanfront), WithOceanfront)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithOceanfront) });
+        }
+
+    }
+}
