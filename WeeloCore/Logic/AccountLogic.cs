@@ -94,6 +94,7 @@ namespace WeeloCore.Logic
             BaseResponse<AccountEntity> response = new BaseResponse<AccountEntity>();
             response.Code = code;
             response.Message = String.Format("{0} {1}", tools.GetMessage(code, messageType), additionalMessage);
+            response.MessageType = messageType;
             return response;
         }
 

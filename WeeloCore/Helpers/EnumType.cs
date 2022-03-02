@@ -121,6 +121,7 @@ namespace WeeloCore.Helpers
         //Types of api response messages
         public enum MessageType
         {
+            None = 0,
             Success = 1,
             Error = 2
         }

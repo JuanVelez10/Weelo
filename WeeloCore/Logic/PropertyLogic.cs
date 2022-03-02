@@ -99,11 +99,12 @@ namespace WeeloCore.Logic
             var propertyEntities = new List<PropertyEntity>();
 
             var properties = propertyRepository.GetAll();
-            if (properties.Any()) {
+            if (properties.Any())
+            {
                 propertyEntities = properties.Select(x => mapper.Map<PropertyEntity>(x)).ToList();
-                if(propertyEntities.Any()) propertyEntities.ForEach(x => Arrive(x));
+                if (propertyEntities.Any()) propertyEntities.ForEach(x => Arrive(x));
             }
-                
+
             return propertyEntities;
         }
 
@@ -128,7 +129,20 @@ namespace WeeloCore.Logic
         //Method to delete a property
         public BaseResponse<PropertyEntity> Delete(Guid? id)
         {
-            throw new NotImplementedException();
+            BaseResponse<PropertyEntity> response = new BaseResponse<PropertyEntity>();
+
+            if (!id.HasValue) return MessageResponse(4, MessageType.Error, "Property");
+            var exitsproperty = Get(id);
+            if (exitsproperty == null) return MessageResponse(3, MessageType.Error, "Property");
+
+            var property = propertyRepository.Delete(id);
+
+            if (property == null) return MessageResponse(6, MessageType.Error);
+
+            response = MessageResponse(1, MessageType.Success, "Property");
+            response.Data = mapper.Map<PropertyEntity>(property);
+
+            return response;
         }
 
         //Method to update a property
@@ -139,7 +153,12 @@ namespace WeeloCore.Logic
             response = Validate(propertyInfoEntity, false);
             if (response.Code > 0) return response;
 
+            var property = propertyRepository.Update(mapper.Map<Property>(propertyInfoEntity));
 
+            if (property == null) return MessageResponse(6, MessageType.Error);
+
+            response = MessageResponse(1, MessageType.Success, "Property");
+            response.Data = mapper.Map<PropertyEntity>(property);
 
             return response;
         }
@@ -150,6 +169,47 @@ namespace WeeloCore.Logic
             BaseResponse<PropertyEntity> response = new BaseResponse<PropertyEntity>();
             response.Code = code;
             response.Message = String.Format("{0} {1}", tools.GetMessage(code, messageType), additionalMessage);
+            response.MessageType = messageType;
+            return response;
+        }
+
+        //Method to update price a property
+        public BaseResponse<PropertyEntity> UpdatePropertyPrice(Guid? id, decimal price)
+        {
+            BaseResponse<PropertyEntity> response = new BaseResponse<PropertyEntity>();
+
+            if (!id.HasValue) return MessageResponse(4, MessageType.Error, "Property");
+            var exitsproperty = Get(id);
+            if (exitsproperty == null) return MessageResponse(3, MessageType.Error, "Property");
+
+            if (price < 0) return MessageResponse(3, MessageType.Error, "Price");
+
+            var property = propertyRepository.UpdatePrice(id, price);
+
+            if (property == null) return MessageResponse(6, MessageType.Error);
+
+            response = MessageResponse(1, MessageType.Success, "Property");
+            response.Data = mapper.Map<PropertyEntity>(property);
+
+            return response;
+        }
+
+        //Method to update enable a property
+        public BaseResponse<PropertyEntity> UpdatePropertyEnable(Guid? id, bool enable)
+        {
+            BaseResponse<PropertyEntity> response = new BaseResponse<PropertyEntity>();
+
+            if (!id.HasValue) return MessageResponse(4, MessageType.Error, "Property");
+            var exitsproperty = Get(id);
+            if (exitsproperty == null) return MessageResponse(3, MessageType.Error, "Property");
+
+            var property = propertyRepository.UpdateEnable(id, enable);
+
+            if (property == null) return MessageResponse(6, MessageType.Error);
+
+            response = MessageResponse(1, MessageType.Success, "Property");
+            response.Data = mapper.Map<PropertyEntity>(property);
+
             return response;
         }
 
@@ -238,6 +298,7 @@ namespace WeeloCore.Logic
                 if (!propertyInfoEntity.Id.HasValue) return MessageResponse(4, MessageType.Error, "Property");
                 var exitsproperty = Get(propertyInfoEntity.Id);
                 if (exitsproperty == null) return MessageResponse(3, MessageType.Error, "Property");
+
             }
 
             return new BaseResponse<PropertyEntity>();
@@ -247,9 +308,8 @@ namespace WeeloCore.Logic
         //Method to buy property with existing
         private bool BuyProperty(PropertyEntity property)
         {
-            return GetAll().Where(x => x.Address == property.Address && x.IdZone == property.IdZone && x.Name == property.Name && x.IdOwner == property.IdOwner && x.Year == property.Year).Any();
+            return GetAll().Where(x => x.Address == property.Address && x.IdZone == property.IdZone && x.IdOwner == property.IdOwner && x.Year == property.Year).Any();
         }
-
 
     }
 }

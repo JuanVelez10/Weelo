@@ -37,7 +37,12 @@ namespace WeeloAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var properties = propertyLogic.GetAll();
+            var properties = new List<PropertyEntity>();
+            await Task.Run(() =>
+            {
+                properties = propertyLogic.GetAll();
+            });
+
             if (properties.Any()) return Ok(properties);
             return NotFound();
         }
@@ -46,9 +51,9 @@ namespace WeeloAPI.Controllers
         //Method to get a specific property,with detailed information
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Client")]
-        public IActionResult Get(Guid? Id)
+        public IActionResult Get(Guid? id)
         {
-            var property = propertyLogic.Get(Id);
+            var property = propertyLogic.Get(id);
             if (property != null) return Ok(property);
             return NotFound();
         }
@@ -60,7 +65,13 @@ namespace WeeloAPI.Controllers
         [Authorize(Roles = "Admin,Client")]
         public async Task<IActionResult> Find([FromBody] FindPropertyRequest findPropertyRequest)
         {
-            var properties = propertyLogic.Find(mapper.Map<FindPropertyEntity>(findPropertyRequest));
+            var properties = new List<PropertyBasicEntity>();
+
+            await Task.Run(() =>
+            {
+                properties = propertyLogic.Find(mapper.Map<FindPropertyEntity>(findPropertyRequest));
+            });
+
             if (properties.Any()) return Ok(properties);
             return NotFound();
         }
@@ -72,7 +83,7 @@ namespace WeeloAPI.Controllers
         {
             var response = propertyLogic.Insert(mapper.Map<PropertyEntity>(propertyRequest));
             if (response != null) return Ok(response);
-            return NotFound();
+            return BadRequest();
         }
 
         // PUT api/<PropertyController>
@@ -82,17 +93,40 @@ namespace WeeloAPI.Controllers
         {
             var response = propertyLogic.Update(mapper.Map<PropertyEntity>(propertyRequest));
             if (response != null) return Ok(response);
-            return NotFound();
+            return BadRequest();
         }
 
-        // DELETE api/<PropertyController>
+        // DELETE api/<PropertyController>/c9f60fd2-1a6a-415c-9fc2-10fb73d62b46
         //Method to delete a property
-        [HttpDelete()]
+        [HttpDelete("{id}")]
         public IActionResult Delete(Guid? id)
         {
             var response = propertyLogic.Delete(id);
             if (response != null) return Ok(response);
-            return NotFound();
+            return BadRequest();
         }
+
+        // PATCH api/<PropertyController>/Enable
+        //Method to delete a property
+        [HttpPatch()]
+        [Route("Enable")]
+        public IActionResult Enable(Guid? id, bool enable)
+        {
+            var response = propertyLogic.UpdatePropertyEnable(id, enable);
+            if (response != null) return Ok(response);
+            return BadRequest();
+        }
+
+        // PATCH api/<PropertyController>/Price
+        //Method to delete a property
+        [HttpPatch()]
+        [Route("Price")]
+        public IActionResult Price(Guid? id, decimal price)
+        {
+            var response = propertyLogic.UpdatePropertyPrice(id, price);
+            if (response != null) return Ok(response);
+            return BadRequest();
+        }
+
     }
 }

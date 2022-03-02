@@ -11,9 +11,32 @@ namespace WeeloInfrastructure.Repositories
     {
         public override Property Delete(Guid? id)
         {
-            var property = Get(id);
-            property = weeloDBContext.Properties.Remove(property).Entity;
-            weeloDBContext.SaveChanges();
+            var property = new Property();
+            using (var dbContextTransaction = weeloDBContext.Database.BeginTransaction())
+            {
+
+                try
+                {
+                    property = Get(id);
+
+                    var images = weeloDBContext.PropertyImages.Where(x => x.IdProperty == property.Id).ToList();
+                    images.ForEach(x=> weeloDBContext.PropertyImages.Remove(x));
+
+                    var traces = weeloDBContext.PropertyTraces.Where(x => x.IdProperty == property.Id).ToList();
+                    traces.ForEach(x => weeloDBContext.PropertyTraces.Remove(x));
+
+                    property = weeloDBContext.Properties.Remove(property).Entity;
+
+                    weeloDBContext.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+                catch
+                {
+                    dbContextTransaction.Rollback();
+                    property = null;
+                }
+            }
+
             return property;
         }
 
@@ -39,8 +62,49 @@ namespace WeeloInfrastructure.Repositories
 
         public override Property Update(Property @object)
         {
-            @object.Update = DateTime.Now;
-            var property = weeloDBContext.Properties.Update(@object).Entity;
+            var property = Get(@object.Id);
+            property.Update = DateTime.Now;
+            property.Address = @object.Address;
+            property.AreaType = (int)@object.AreaType;
+            property.Bathrooms = @object.Bathrooms;
+            property.ConditionType = (int)@object.ConditionType;
+            property.Description = @object.Description;
+            property.Elevator = @object.Elevator;
+            property.Enabled = @object.Enabled;
+            property.Floor = @object.Floor;
+            property.Furnished = @object.Furnished;
+            property.Garages = @object.Garages;
+            property.Gym = @object.Gym;
+            property.IdOwner = @object.IdOwner;
+            property.IdZone = @object.IdZone;
+            property.Latitude = @object.Latitude;
+            property.Longitude = @object.Longitude;
+            property.Name = @object.Name;
+            property.Oceanfront = @object.Oceanfront;
+            property.Price = @object.Price;
+            property.PropertyType = (int)@object.PropertyType;
+            property.Rooms = @object.Rooms;
+            property.SecurityType = (int)@object.SecurityType;
+            property.SwimmingPool = @object.SwimmingPool;
+            property.Year = @object.Year;
+            weeloDBContext.SaveChanges();
+            return property;
+        }
+
+        public Property UpdatePrice(Guid? id, decimal price)
+        {
+            var property = Get(id);
+            property.Update = DateTime.Now;
+            property.Price = price;
+            weeloDBContext.SaveChanges();
+            return property;
+        }
+
+        public Property UpdateEnable(Guid? id, bool enable)
+        {
+            var property = Get(id);
+            property.Update = DateTime.Now;
+            property.Enabled = enable;
             weeloDBContext.SaveChanges();
             return property;
         }
