@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WeeloCore.Entities;
 using WeeloInfrastructure.Repositories;
 using static WeeloCore.Helpers.EnumType;
 

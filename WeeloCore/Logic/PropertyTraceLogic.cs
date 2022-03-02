@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeeloCore.Entities;
+using WeeloCore.Helpers;
 using WeeloInfrastructure.Repositories;
 
 namespace WeeloCore.Logic
@@ -22,7 +23,7 @@ namespace WeeloCore.Logic
             propertyTraceRepository = new PropertyTraceRepository();
         }
 
-        public PropertyTraceEntity Delete(Guid? id)
+        public BaseResponse<PropertyTraceEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
@@ -37,12 +38,12 @@ namespace WeeloCore.Logic
             throw new NotImplementedException();
         }
 
-        public PropertyTraceEntity Insert(PropertyTraceEntity @object)
+        public BaseResponse<PropertyTraceEntity> Insert(PropertyTraceEntity @object)
         {
             throw new NotImplementedException();
         }
 
-        public PropertyTraceEntity Update(PropertyTraceEntity @object)
+        public BaseResponse<PropertyTraceEntity> Update(PropertyTraceEntity @object)
         {
             throw new NotImplementedException();
         }
@@ -65,5 +66,9 @@ namespace WeeloCore.Logic
             return propertyTraceEntities;
         }
 
+        public BaseResponse<PropertyTraceEntity> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
+        {
+            throw new NotImplementedException();
+        }
     }
 }

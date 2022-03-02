@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WeeloCore.Entities
 {
-    public class BaseEntity
+    public class BaseResponse<T>
     {
-        public BaseEntity()
+        public BaseResponse()
         {
             Message = string.Empty;
             Code = 0;
@@ -16,5 +16,8 @@ namespace WeeloCore.Entities
 
         public int Code { get; set; }
         public string Message { get; set; }
+
+        public T Data { get; set; }
+
     }
 }

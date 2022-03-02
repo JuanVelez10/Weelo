@@ -26,6 +26,8 @@ namespace WeeloCore.Entities
         public WithSwimmingPool WithSwimmingPool { get; set; } = WithSwimmingPool.Both;
         public WithGym WithGym { get; set; } = WithGym.Both;
         public WithOceanfront WithOceanfront { get; set; } = WithOceanfront.Both;
+        public WithImages WithImages { get; set; } = WithImages.Both;
         public OrderProperty OrderProperty { get; set; } = OrderProperty.None;
+        public EnabledProperty EnabledProperty { get; set; } = EnabledProperty.Both;
     }
 }

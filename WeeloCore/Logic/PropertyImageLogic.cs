@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeeloCore.Entities;
+using WeeloCore.Helpers;
 using WeeloInfrastructure.Repositories;
 
 namespace WeeloCore.Logic
@@ -20,7 +21,7 @@ namespace WeeloCore.Logic
             propertyImageRepository = new PropertyImageRepository();
         }
 
-        public PropertyImageEntity Delete(Guid? id)
+        public BaseResponse<PropertyImageEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
@@ -35,12 +36,12 @@ namespace WeeloCore.Logic
             throw new NotImplementedException();
         }
 
-        public PropertyImageEntity Insert(PropertyImageEntity @object)
+        public BaseResponse<PropertyImageEntity> Insert(PropertyImageEntity @object)
         {
             throw new NotImplementedException();
         }
 
-        public PropertyImageEntity Update(PropertyImageEntity @object)
+        public BaseResponse<PropertyImageEntity> Update(PropertyImageEntity @object)
         {
             throw new NotImplementedException();
         }
@@ -56,18 +57,21 @@ namespace WeeloCore.Logic
             return propertyImageEntities;
         }
 
-        public PropertyImageEntity GetFirstForProperty(Guid? idProperty)
+        public string GetFirstForProperty(Guid? idProperty)
         {
-            var propertyImageEntity = new PropertyImageEntity();
+            var imagenUrl = string.Empty;
             if (idProperty.HasValue)
             {
                 var propertyImage = propertyImageRepository.GetFirstForIdProperty(idProperty);
-                if (propertyImage != null) propertyImageEntity = mapper.Map<PropertyImageEntity>(propertyImage);
+                if (propertyImage != null) imagenUrl = propertyImage.Url;
             }
-            return propertyImageEntity;
+            return imagenUrl;
         }
 
-
+        public BaseResponse<PropertyImageEntity> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

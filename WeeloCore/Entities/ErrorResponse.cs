@@ -1,4 +1,4 @@
-﻿namespace WeeloAPI.References
+﻿namespace WeeloCore.Entities
 {
     public class ErrorResponse
     {

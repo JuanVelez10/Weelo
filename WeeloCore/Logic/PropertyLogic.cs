@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeeloCore.Entities;
+using WeeloCore.Helpers;
 using WeeloInfrastructure.DataBase;
 using WeeloInfrastructure.Repositories;
 using static WeeloCore.Helpers.EnumType;
@@ -20,6 +21,7 @@ namespace WeeloCore.Logic
         private ZoneLogic zoneLogic;
         private PropertyImageLogic propertyImageLogic;
         private PropertyTraceLogic propertyTraceLogic;
+        private Tools tools;
 
         public PropertyLogic(IMapper mapper)
         {
@@ -29,31 +31,32 @@ namespace WeeloCore.Logic
             propertyImageLogic = new PropertyImageLogic(mapper);
             propertyTraceLogic = new PropertyTraceLogic(mapper);
             propertyRepository = new PropertyRepository();
+            tools = new Tools();
         }
 
         //Method to search for properties by city, area, price, year, room number among other filters
-        public List<PropertyEntity> Find(FindPropertyEntity find)
+        public List<PropertyBasicEntity> Find(FindPropertyEntity find)
         {
-            var properties = new List<PropertyEntity>();
+            var properties = new List<PropertyBasicEntity>();
 
             if (find.IdCity.HasValue)
             {
                 properties = GetAllForCity(find.IdCity);
-                properties = Filter(properties, find);
                 properties = Arrive(properties);
+                properties = Filter(properties, find);
             }
 
             return properties;
         }
 
         //Method to get a specific property,with detailed information
-        public PropertyInfoEntity GetInfo(Guid? id)
+        public PropertyEntity Get(Guid? id)
         {
-            var property = new PropertyInfoEntity();
+            var property = new PropertyEntity();
 
             if (id.HasValue)
             {
-                property = mapper.Map<PropertyInfoEntity>(propertyRepository.Get(id));
+                property = mapper.Map<PropertyEntity>(propertyRepository.Get(id));
 
                 if (property != null)
                 {
@@ -71,9 +74,9 @@ namespace WeeloCore.Logic
         }
 
         //Search properties by a city
-        public List<PropertyEntity> GetAllForCity(Guid? idCity)
+        public List<PropertyBasicEntity> GetAllForCity(Guid? idCity)
         {
-            var propertyEntities = new List<PropertyEntity>();
+            var propertyEntities = new List<PropertyBasicEntity>();
 
             if (idCity.HasValue)
             {
@@ -82,20 +85,12 @@ namespace WeeloCore.Logic
                 {
                     var idZones = zones.Select(x => x.Id).ToList();
                     var properties = propertyRepository.GetAllForZones(idZones);
-                    if (properties.Any()) propertyEntities = properties.Select(x => mapper.Map<PropertyEntity>(x)).ToList();
+                    if (properties.Any()) propertyEntities = properties.Select(x => mapper.Map<PropertyBasicEntity>(x)).ToList();
                 }
 
             }
 
             return propertyEntities;
-        }
-
-        //Method to get a specific property,with basic information
-        public PropertyEntity Get(Guid? id)
-        {
-            var propertyEntity = new PropertyEntity();
-            if (id.HasValue)  propertyEntity = mapper.Map<PropertyEntity>(propertyRepository.Get(id));
-            return propertyEntity;
         }
 
         //Method to get all system properties
@@ -106,32 +101,60 @@ namespace WeeloCore.Logic
             var properties = propertyRepository.GetAll();
             if (properties.Any()) {
                 propertyEntities = properties.Select(x => mapper.Map<PropertyEntity>(x)).ToList();
-                if(propertyEntities.Any()) propertyEntities = Arrive(propertyEntities);
+                if(propertyEntities.Any()) propertyEntities.ForEach(x => Arrive(x));
             }
                 
             return propertyEntities;
         }
 
         //Method to add a new property
-        public PropertyEntity Insert(PropertyEntity @object)
+        public BaseResponse<PropertyEntity> Insert(PropertyEntity propertyInfoEntity)
         {
-            throw new NotImplementedException();
+            BaseResponse<PropertyEntity> response = new BaseResponse<PropertyEntity>();
+
+            response = Validate(propertyInfoEntity, true);
+            if (response.Code > 0) return response;
+
+            var property = propertyRepository.Insert(mapper.Map<Property>(propertyInfoEntity));
+
+            if (property == null) return MessageResponse(6, MessageType.Error);
+
+            response = MessageResponse(1, MessageType.Success, "Property");
+            response.Data = mapper.Map<PropertyEntity>(property);
+
+            return response;
         }
 
         //Method to delete a property
-        public PropertyEntity Delete(Guid? id)
+        public BaseResponse<PropertyEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
 
         //Method to update a property
-        public PropertyEntity Update(PropertyEntity @object)
+        public BaseResponse<PropertyEntity> Update(PropertyEntity propertyInfoEntity)
         {
-            throw new NotImplementedException();
+            BaseResponse<PropertyEntity> response = new BaseResponse<PropertyEntity>();
+
+            response = Validate(propertyInfoEntity, false);
+            if (response.Code > 0) return response;
+
+
+
+            return response;
+        }
+
+        //Method to return response message
+        public BaseResponse<PropertyEntity> MessageResponse(int code, MessageType messageType, string additionalMessage = "")
+        {
+            BaseResponse<PropertyEntity> response = new BaseResponse<PropertyEntity>();
+            response.Code = code;
+            response.Message = String.Format("{0} {1}", tools.GetMessage(code, messageType), additionalMessage);
+            return response;
         }
 
         //Method to filter properties
-        private List<PropertyEntity> Filter(List<PropertyEntity> properties, FindPropertyEntity find)
+        private List<PropertyBasicEntity> Filter(List<PropertyBasicEntity> properties, FindPropertyEntity find)
         {
             if (find != null && properties.Any())
             {
@@ -153,21 +176,26 @@ namespace WeeloCore.Logic
                 if (find.WithGym == WithGym.NotGym) properties = properties.Where(x => x.Gym == false).ToList();
                 if (find.WithOceanfront == WithOceanfront.Oceanfront) properties = properties.Where(x => x.Oceanfront == true).ToList();
                 if (find.WithOceanfront == WithOceanfront.NotOceanfront) properties = properties.Where(x => x.Oceanfront == false).ToList();
+                if (find.WithImages == WithImages.Images) properties = properties.Where(x => !string.IsNullOrEmpty(x.ImageUrl)).ToList();
+                if (find.WithImages == WithImages.NotImages) properties = properties.Where(x => string.IsNullOrEmpty(x.ImageUrl)).ToList();
 
                 if (find.OrderProperty == OrderProperty.PriceMin) properties = properties.OrderBy(x => x.Price).ToList();
                 if (find.OrderProperty == OrderProperty.PriceMax) properties = properties.OrderByDescending(x => x.Price).ToList();
                 if (find.OrderProperty == OrderProperty.YearMax) properties = properties.OrderByDescending(x => x.Year).ToList();
+
+                if (find.EnabledProperty == EnabledProperty.Enabled) properties = properties.Where(x => x.Enabled == true).ToList();
+                if (find.EnabledProperty == EnabledProperty.NotEnabled) properties = properties.Where(x => x.Enabled == false).ToList();
 
             }
             return properties;
         }
 
         //Load rest of information to properties
-        private List<PropertyEntity> Arrive(List<PropertyEntity> properties)
+        private List<PropertyBasicEntity> Arrive(List<PropertyBasicEntity> properties)
         {
             if (properties.Any())
             {
-                properties.ForEach(x => x.ImageUrl = propertyImageLogic.GetFirstForProperty(x.Id).Url);
+                properties.ForEach(x => x.ImageUrl = propertyImageLogic.GetFirstForProperty(x.Id));
                 properties.ForEach(x => x.Type = x.PropertyType.ToString());
                 properties.ForEach(x => x.Condition = x.ConditionType.ToString());
                 properties.ForEach(x => x.Security = x.SecurityType.ToString());
@@ -177,7 +205,7 @@ namespace WeeloCore.Logic
         }
 
         //Load rest of information to a property
-        private PropertyInfoEntity Arrive(PropertyInfoEntity property)
+        private PropertyEntity Arrive(PropertyEntity property)
         {
             if (property != null)
             {
@@ -188,6 +216,40 @@ namespace WeeloCore.Logic
             }
             return property;
         }
+
+        //Method to Validate property
+        private BaseResponse<PropertyEntity> Validate(PropertyEntity propertyInfoEntity, bool add)
+        {
+            if (!propertyInfoEntity.IdZone.HasValue) return MessageResponse(4, MessageType.Error, "Zone");
+            var zone = zoneLogic.Get(propertyInfoEntity.IdZone);
+            if (zone == null) return MessageResponse(3, MessageType.Error, "Zone");
+
+            if (!propertyInfoEntity.IdOwner.HasValue) return MessageResponse(4, MessageType.Error, "Zone");
+            var owner = accountLogic.Get(propertyInfoEntity.IdOwner);
+            if (owner == null) return MessageResponse(3, MessageType.Error, "Owner");
+
+            if (add)
+            {
+                var exitsproperty = BuyProperty(propertyInfoEntity);
+                if (exitsproperty) return MessageResponse(7, MessageType.Error, "Property");
+            }
+            else
+            {
+                if (!propertyInfoEntity.Id.HasValue) return MessageResponse(4, MessageType.Error, "Property");
+                var exitsproperty = Get(propertyInfoEntity.Id);
+                if (exitsproperty == null) return MessageResponse(3, MessageType.Error, "Property");
+            }
+
+            return new BaseResponse<PropertyEntity>();
+
+        }
+
+        //Method to buy property with existing
+        private bool BuyProperty(PropertyEntity property)
+        {
+            return GetAll().Where(x => x.Address == property.Address && x.IdZone == property.IdZone && x.Name == property.Name && x.IdOwner == property.IdOwner && x.Year == property.Year).Any();
+        }
+
 
     }
 }

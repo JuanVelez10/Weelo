@@ -15,7 +15,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using WeeloAPI.Helpers;
-using WeeloAPI.References;
+using WeeloCore.Entities;
 using WeeloCore.Helpers;
 using static WeeloCore.Helpers.EnumType;
 

@@ -29,6 +29,9 @@ namespace WeeloInfrastructure.Repositories
 
         public override Property Insert(Property @object)
         {
+            var date = DateTime.Now;
+            @object.Create = date;
+            @object.Update = date;
             var property = weeloDBContext.Properties.Add(@object).Entity;
             weeloDBContext.SaveChanges();
             return property;
@@ -36,6 +39,7 @@ namespace WeeloInfrastructure.Repositories
 
         public override Property Update(Property @object)
         {
+            @object.Update = DateTime.Now;
             var property = weeloDBContext.Properties.Update(@object).Entity;
             weeloDBContext.SaveChanges();
             return property;

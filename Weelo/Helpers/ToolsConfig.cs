@@ -16,7 +16,7 @@ namespace WeeloAPI.Helpers
     public class ToolsConfig
     {
         //Method to generate token per account
-        public string Generate(IConfiguration config,LoginResponse loginResponse)
+        public string Generate(IConfiguration config,AccountEntity account)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("Jwt")["Key"]));
             var credencials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -24,10 +24,10 @@ namespace WeeloAPI.Helpers
 
             var claims = new[]
             {
-                    new Claim(ClaimTypes.NameIdentifier, loginResponse.Id.ToString()),
-                    new Claim(ClaimTypes.Name, loginResponse.Name),
-                    new Claim(ClaimTypes.Email, loginResponse.Email),
-                    new Claim(ClaimTypes.Role, loginResponse.RoleType.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
+                    new Claim(ClaimTypes.Name, account.Name),
+                    new Claim(ClaimTypes.Email, account.Email),
+                    new Claim(ClaimTypes.Role, account.RoleType.ToString())
             };
 
             var token = new JwtSecurityToken(
@@ -42,9 +42,9 @@ namespace WeeloAPI.Helpers
         }
 
         //Method to get token by account
-        public LoginResponse GetToken(HttpRequest request)
+        public AccountEntity GetToken(HttpRequest request)
         {
-            LoginResponse login = new LoginResponse();
+            AccountEntity account = new AccountEntity();
             string srtoken;
 
             if (TryRetrieveToken(request, out srtoken))
@@ -52,17 +52,17 @@ namespace WeeloAPI.Helpers
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 if (handler.ReadToken(srtoken) is JwtSecurityToken token)
                 {
-                    login.Id = Guid.Parse(token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
-                    login.Name = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-                    login.Email = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-                    login.RoleType = (RoleType)Enum.Parse(typeof(RoleType), token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
+                    account.Id = Guid.Parse(token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
+                    account.Name = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                    account.Email = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+                    account.RoleType = (RoleType)Enum.Parse(typeof(RoleType), token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
                 }
             }
-            return login;
+            return account;
         }
 
         //Method to validate request authorization header
-        private static bool TryRetrieveToken(HttpRequest request, out string token)
+        public  bool TryRetrieveToken(HttpRequest request, out string token)
         {
             token = null;
             if (string.IsNullOrEmpty(request.Headers["Authorization"].ToString())) return false;

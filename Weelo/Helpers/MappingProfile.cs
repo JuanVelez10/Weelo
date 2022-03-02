@@ -13,11 +13,10 @@ namespace WeeloAPI.Helpers
         {
             CreateMap<FindPropertyRequest, FindPropertyEntity>();
             CreateMap<LoginRequest, LoginEntity>();
+            CreateMap<PropertyRequest, PropertyEntity>();
 
-            CreateMap<AccountEntity, LoginResponse>();
-
+            CreateMap<Property, PropertyBasicEntity>();
             CreateMap<Property, PropertyEntity>();
-            CreateMap<Property, PropertyInfoEntity>();
             CreateMap<Account, AccountEntity>();
             CreateMap<Zone, ZoneEntity>();
             CreateMap<City, CityEntity>();
@@ -25,6 +24,8 @@ namespace WeeloAPI.Helpers
             CreateMap<Country, CountryEntity>();
             CreateMap<PropertyImage, PropertyImageEntity>();
             CreateMap<PropertyTrace, PropertyTraceEntity>();
+
+            CreateMap<PropertyEntity, Property>();
 
             CreateMap<ZoneEntity, ZoneInfoEntity>();
 

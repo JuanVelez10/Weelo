@@ -102,6 +102,22 @@ namespace WeeloCore.Helpers
             Both = 0
         }
 
+        //To search by Enabled property
+        public enum EnabledProperty
+        {
+            NotEnabled = 2,
+            Enabled = 1,
+            Both = 0
+        }
+
+        //To search by Images property
+        public enum WithImages
+        {
+            NotImages = 2,
+            Images = 1,
+            Both = 0
+        }
+
         //Types of api response messages
         public enum MessageType
         {

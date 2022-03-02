@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeeloCore.Entities;
+using WeeloCore.Helpers;
 using WeeloInfrastructure.Repositories;
 
 namespace WeeloCore.Logic
@@ -22,7 +23,7 @@ namespace WeeloCore.Logic
             stateRepository = new StateRepository();
         }
 
-        public StateEntity Delete(Guid? id)
+        public BaseResponse<StateEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
@@ -33,7 +34,7 @@ namespace WeeloCore.Logic
             if (id.HasValue)
             {
                 state = mapper.Map<StateEntity>(stateRepository.Get(id));
-                if (state.IdCountry.HasValue) state.Country = countryLogic.Get(state.IdCountry);
+                if (state != null && state.IdCountry.HasValue) state.Country = countryLogic.Get(state.IdCountry);
             }
             return state;
         }
@@ -43,12 +44,17 @@ namespace WeeloCore.Logic
             throw new NotImplementedException();
         }
 
-        public StateEntity Insert(StateEntity @object)
+        public BaseResponse<StateEntity> Insert(StateEntity @object)
         {
             throw new NotImplementedException();
         }
 
-        public StateEntity Update(StateEntity @object)
+        public BaseResponse<StateEntity> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
+        {
+            throw new NotImplementedException();
+        }
+
+        public BaseResponse<StateEntity> Update(StateEntity @object)
         {
             throw new NotImplementedException();
         }

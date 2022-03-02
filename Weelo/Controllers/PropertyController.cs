@@ -18,7 +18,7 @@ namespace WeeloAPI.Controllers
     //In this class, all the services associated with the properties or dwellings are consumed.
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Client")]
+    [Authorize(Roles = "Admin")]
     public class PropertyController : ControllerBase
     {
         private readonly IMapper mapper;
@@ -35,7 +35,6 @@ namespace WeeloAPI.Controllers
         // GET api/<PropertyController>
         //Method to get all system properties
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var properties = propertyLogic.GetAll();
@@ -46,9 +45,10 @@ namespace WeeloAPI.Controllers
         // GET api/<PropertyController>/c9f60fd2-1a6a-415c-9fc2-10fb73d62b46
         //Method to get a specific property,with detailed information
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Client")]
         public IActionResult Get(Guid? Id)
         {
-            var property = propertyLogic.GetInfo(Id);
+            var property = propertyLogic.Get(Id);
             if (property != null) return Ok(property);
             return NotFound();
         }
@@ -57,7 +57,8 @@ namespace WeeloAPI.Controllers
         //Method to search for properties by city, area, price, year, room number among other filters
         [HttpPost]
         [Route("Find")]
-        public async Task<IActionResult> GetAllForCity([FromBody] FindPropertyRequest findPropertyRequest)
+        [Authorize(Roles = "Admin,Client")]
+        public async Task<IActionResult> Find([FromBody] FindPropertyRequest findPropertyRequest)
         {
             var properties = propertyLogic.Find(mapper.Map<FindPropertyEntity>(findPropertyRequest));
             if (properties.Any()) return Ok(properties);
@@ -67,26 +68,31 @@ namespace WeeloAPI.Controllers
         // POST api/<PropertyController>
         //Method to add a new property
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] PropertyRequest propertyRequest)
         {
-            var login = toolsConfig.GetToken(Request);
+            var response = propertyLogic.Insert(mapper.Map<PropertyEntity>(propertyRequest));
+            if (response != null) return Ok(response);
+            return NotFound();
         }
 
         // PUT api/<PropertyController>
         //Method to update a property
         [HttpPut()]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] PropertyRequest propertyRequest)
         {
-            var login = toolsConfig.GetToken(Request);
+            var response = propertyLogic.Update(mapper.Map<PropertyEntity>(propertyRequest));
+            if (response != null) return Ok(response);
+            return NotFound();
         }
 
         // DELETE api/<PropertyController>
         //Method to delete a property
         [HttpDelete()]
-        [Authorize(Roles = "Admin")]
-        public void Delete(int id)
+        public IActionResult Delete(Guid? id)
         {
-            var login = toolsConfig.GetToken(Request);
+            var response = propertyLogic.Delete(id);
+            if (response != null) return Ok(response);
+            return NotFound();
         }
     }
 }

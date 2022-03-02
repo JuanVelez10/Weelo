@@ -54,6 +54,21 @@ namespace WeeloAPI.Controllers
             return NotFound();
         }
 
+        // GET api/<AccountController>
+        //Method to get a specific logged account
+        [HttpGet]
+        [Route("Logged")]
+        public IActionResult Logged()
+        {
+            var account = toolsConfig.GetToken(Request);
+            if (account != null) account = accountLogic.Get(account.Id);
+            string srtoken =string.Empty;
+            toolsConfig.TryRetrieveToken(Request, out srtoken);
+            account.Token = srtoken;
+            if (account != null) return Ok(account);
+            return NotFound();
+        }
+
 
         // POST api/<AccountController>
         //In this method an account is validated for login and a jwt token is generated
@@ -62,16 +77,18 @@ namespace WeeloAPI.Controllers
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginRequest  loginRequest)
         {
-            var account = accountLogic.GetAccountLogin(mapper.Map<LoginEntity>(loginRequest));
-            if(account != null)
+            var response = accountLogic.GetAccountLogin(mapper.Map<LoginEntity>(loginRequest));
+            if(response != null)
             {
-                var loginResponse = mapper.Map<LoginResponse>(account);
-                loginResponse.Token = toolsConfig.Generate(config,loginResponse);
-                return Ok(loginResponse);
+                response.Data.Token = toolsConfig.Generate(config, response.Data);
+                return Ok(response);
             }
 
             return NotFound();
         }
+
+
+       
 
     }
 }

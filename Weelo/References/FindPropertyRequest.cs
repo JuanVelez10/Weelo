@@ -26,7 +26,9 @@ namespace WeeloAPI.References
         public WithSwimmingPool WithSwimmingPool { get; set; } = WithSwimmingPool.Both;
         public WithGym WithGym { get; set; } = WithGym.Both;
         public WithOceanfront WithOceanfront { get; set; } = WithOceanfront.Both;
+        public WithImages WithImages { get; set; } = WithImages.Both;
         public OrderProperty OrderProperty { get; set; } = OrderProperty.None;
+        public EnabledProperty EnabledProperty { get; set; } = EnabledProperty.Both;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -43,6 +45,9 @@ namespace WeeloAPI.References
             if (!Enum.IsDefined(typeof(WithSwimmingPool), WithSwimmingPool)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithSwimmingPool) });
             if (!Enum.IsDefined(typeof(WithGym), WithGym)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithGym) });
             if (!Enum.IsDefined(typeof(WithOceanfront), WithOceanfront)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithOceanfront) });
+            if (!Enum.IsDefined(typeof(WithImages), WithImages)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(WithImages) });
+            if (!Enum.IsDefined(typeof(OrderProperty), OrderProperty)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(OrderProperty) });
+            if (!Enum.IsDefined(typeof(EnabledProperty), EnabledProperty)) yield return new ValidationResult(tools.GetMessage(3, MessageType.Error), new[] { nameof(EnabledProperty) });
         }
 
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WeeloCore.Entities;
+using WeeloCore.Helpers;
 using WeeloInfrastructure.Repositories;
 
 namespace WeeloCore.Logic
@@ -68,7 +69,7 @@ namespace WeeloCore.Logic
             return zoneInfoEntity;
         }
 
-        public ZoneEntity Delete(Guid? id)
+        public BaseResponse<ZoneEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +80,7 @@ namespace WeeloCore.Logic
             if (id.HasValue)
             {
                 zone = mapper.Map<ZoneEntity>(zoneRepository.Get(id));
-                if (zone.IdCity.HasValue) zone.City = cityLogic.Get(zone.IdCity);
+                if (zone != null &&  zone.IdCity.HasValue) zone.City = cityLogic.Get(zone.IdCity);
             }
             return zone;
         }
@@ -89,12 +90,17 @@ namespace WeeloCore.Logic
             throw new NotImplementedException();
         }
 
-        public ZoneEntity Insert(ZoneEntity @object)
+        public BaseResponse<ZoneEntity> Insert(ZoneEntity @object)
         {
             throw new NotImplementedException();
         }
 
-        public ZoneEntity Update(ZoneEntity @object)
+        public BaseResponse<ZoneEntity> Update(ZoneEntity @object)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BaseResponse<ZoneEntity> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
         {
             throw new NotImplementedException();
         }

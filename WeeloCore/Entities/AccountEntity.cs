@@ -7,7 +7,7 @@ using static WeeloCore.Helpers.EnumType;
 
 namespace WeeloCore.Entities
 {
-    public class AccountEntity : BaseEntity
+    public class AccountEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

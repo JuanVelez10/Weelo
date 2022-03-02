@@ -25,21 +25,25 @@ namespace WeeloCore.Logic
         }
 
         //Method to obtain an account for login
-        public AccountEntity GetAccountLogin(LoginEntity loginEntity)
+        public BaseResponse<AccountEntity> GetAccountLogin(LoginEntity loginEntity)
         {
-            if (loginEntity == null) return ErrorLogin(4, MessageType.Error, "LoginEntity");
-            if (string.IsNullOrEmpty(loginEntity.Email)) return ErrorLogin(4, MessageType.Error, "Email");
-            if (string.IsNullOrEmpty(loginEntity.Password)) return ErrorLogin(4, MessageType.Error, "Passwork");
+            BaseResponse<AccountEntity> response = new BaseResponse<AccountEntity>(); 
+
+            if (loginEntity == null) return MessageResponse(4, MessageType.Error, "LoginEntity");
+            if (string.IsNullOrEmpty(loginEntity.Email)) return MessageResponse(4, MessageType.Error, "Email");
+            if (string.IsNullOrEmpty(loginEntity.Password)) return MessageResponse(4, MessageType.Error, "Passwork");
 
             var account = GetForEmailAndPassword(loginEntity.Email, loginEntity.Password);
 
-            if (account == null) return ErrorLogin(3, MessageType.Error, "Account");
+            if (account == null) return MessageResponse(3, MessageType.Error, "Account");
+            response = MessageResponse(1, MessageType.Success, "Account");
+            response.Data = account;
 
-            return account;
+            return response;
         }
 
         //Method to delete a account
-        public AccountEntity Delete(Guid? id)
+        public BaseResponse<AccountEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
@@ -67,13 +71,13 @@ namespace WeeloCore.Logic
         }
 
         //Method to add a account
-        public AccountEntity Insert(AccountEntity @object)
+        public BaseResponse<AccountEntity> Insert(AccountEntity @object)
         {
             throw new NotImplementedException();
         }
 
         //Method to update a account
-        public AccountEntity Update(AccountEntity @object)
+        public BaseResponse<AccountEntity> Update(AccountEntity @object)
         {
             throw new NotImplementedException();
         }
@@ -84,13 +88,13 @@ namespace WeeloCore.Logic
             return mapper.Map<AccountEntity>(accountRepository.GetForEmailAndPassword(email, password));
         }
 
-        //Method to handle login errors
-        private AccountEntity ErrorLogin(int code, MessageType messageType,string additionalMessage)
+        //Method to return response message
+        public BaseResponse<AccountEntity> MessageResponse(int code, MessageType messageType, string additionalMessage = "")
         {
-            AccountEntity accountEntity = new AccountEntity();
-            accountEntity.Code = code;
-            accountEntity.Message = String.Format("{0} {1}" , tools.GetMessage(code, messageType) , additionalMessage);
-            return accountEntity;
+            BaseResponse<AccountEntity> response = new BaseResponse<AccountEntity>();
+            response.Code = code;
+            response.Message = String.Format("{0} {1}", tools.GetMessage(code, messageType), additionalMessage);
+            return response;
         }
 
     }
