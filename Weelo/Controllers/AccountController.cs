@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WeeloAPI.Helpers;
@@ -28,8 +29,8 @@ namespace WeeloAPI.Controllers
         public AccountController(IMapper mapper, IConfiguration iConfig)
         {
             this.mapper = mapper;
-            this.accountLogic = new AccountLogic(mapper);
-            this.config = iConfig;
+            accountLogic = new AccountLogic(mapper);
+            config = iConfig;
             toolsConfig = new ToolsConfig();
         }
 
@@ -39,7 +40,12 @@ namespace WeeloAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
-            var accounts = accountLogic.GetAll();
+            var accounts = new List<AccountEntity>();
+            await Task.Run(() =>
+            {
+                accounts = accountLogic.GetAll();
+            });
+
             if (accounts.Any()) return Ok(accounts);
             return NotFound();
         }
@@ -69,7 +75,6 @@ namespace WeeloAPI.Controllers
             return NotFound();
         }
 
-
         // POST api/<AccountController>
         //In this method an account is validated for login and a jwt token is generated
         [HttpPost]
@@ -87,8 +92,6 @@ namespace WeeloAPI.Controllers
             return NotFound();
         }
 
-
-       
 
     }
 }

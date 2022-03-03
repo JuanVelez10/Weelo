@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using WeeloCore.Entities;
 using WeeloCore.Helpers;
+using WeeloInfrastructure.DataBase;
 using WeeloInfrastructure.Repositories;
+using static WeeloCore.Helpers.EnumType;
 
 namespace WeeloCore.Logic
 {
@@ -14,11 +16,13 @@ namespace WeeloCore.Logic
     {
         private readonly IMapper mapper;
         private PropertyImageRepository propertyImageRepository;
+        private Tools tools;
 
         public PropertyImageLogic(IMapper mapper)
         {
             this.mapper = mapper;
             propertyImageRepository = new PropertyImageRepository();
+            tools = new Tools();
         }
 
         public BaseResponse<PropertyImageEntity> Delete(Guid? id)
@@ -38,7 +42,19 @@ namespace WeeloCore.Logic
 
         public BaseResponse<PropertyImageEntity> Insert(PropertyImageEntity @object)
         {
-            throw new NotImplementedException();
+            BaseResponse<PropertyImageEntity> response = new BaseResponse<PropertyImageEntity>();
+
+           // response = Validate(@object, true);
+            if (response.Code > 0) return response;
+
+            var property = propertyImageRepository.Insert(mapper.Map<PropertyImage>(@object));
+
+            if (property == null) return MessageResponse(6, MessageType.Error);
+
+            response = MessageResponse(1, MessageType.Success, "Property");
+            response.Data = mapper.Map<PropertyImageEntity>(property);
+
+            return response;
         }
 
         public BaseResponse<PropertyImageEntity> Update(PropertyImageEntity @object)
@@ -46,17 +62,19 @@ namespace WeeloCore.Logic
             throw new NotImplementedException();
         }
 
-        public List<PropertyImageEntity> GetAllForProperty(Guid? idProperty)
+        //Method to obtain all the images of a property
+        public List<PropertyImageBasicEntity> GetAllForProperty(Guid? idProperty)
         {
-            var propertyImageEntities = new List<PropertyImageEntity>();
+            var propertyImageEntities = new List<PropertyImageBasicEntity>();
             if (idProperty.HasValue)
             {
                 var propertyImages = propertyImageRepository.GetAllForIdProperty(idProperty);
-                if (propertyImages.Any()) propertyImageEntities = propertyImages.Select(x => mapper.Map<PropertyImageEntity>(x)).ToList();
+                if (propertyImages.Any()) propertyImageEntities = propertyImages.Select(x => mapper.Map<PropertyImageBasicEntity>(x)).ToList();
             }
             return propertyImageEntities;
         }
 
+        //Method to obtain one the image of a property
         public string GetFirstForProperty(Guid? idProperty)
         {
             var imagenUrl = string.Empty;
@@ -68,9 +86,14 @@ namespace WeeloCore.Logic
             return imagenUrl;
         }
 
+        //Method to return response message
         public BaseResponse<PropertyImageEntity> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
         {
-            throw new NotImplementedException();
+            BaseResponse<PropertyImageEntity> response = new BaseResponse<PropertyImageEntity>();
+            response.Code = code;
+            response.Message = String.Format("{0} {1}", tools.GetMessage(code, messageType), additionalMessage);
+            response.MessageType = messageType;
+            return response;
         }
     }
 

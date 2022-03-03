@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using WeeloAPI.Helpers;
 using WeeloAPI.References;
 using WeeloCore.Entities;
 using WeeloCore.Logic;
@@ -23,13 +21,11 @@ namespace WeeloAPI.Controllers
     {
         private readonly IMapper mapper;
         private PropertyLogic propertyLogic;
-        private ToolsConfig toolsConfig;
 
         public PropertyController(IMapper mapper)
         {
             this.mapper = mapper;
-            this.propertyLogic = new PropertyLogic(mapper);
-            toolsConfig = new ToolsConfig();
+            propertyLogic = new PropertyLogic(mapper);
         }
 
         // GET api/<PropertyController>

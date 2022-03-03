@@ -22,10 +22,13 @@ namespace WeeloAPI.Helpers
             CreateMap<City, CityEntity>();
             CreateMap<State, StateEntity>();
             CreateMap<Country, CountryEntity>();
+            CreateMap<PropertyImage, PropertyImageBasicEntity>();
             CreateMap<PropertyImage, PropertyImageEntity>();
             CreateMap<PropertyTrace, PropertyTraceEntity>();
 
             CreateMap<PropertyEntity, Property>();
+            CreateMap<PropertyImageEntity, PropertyImage>();
+            CreateMap<PropertyTraceEntity, PropertyTrace>();
 
             CreateMap<ZoneEntity, ZoneInfoEntity>();
 

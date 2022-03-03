@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Firebase.Auth;
+using Firebase.Storage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using WeeloAPI.References;
 using WeeloCore.Entities;
 using static WeeloCore.Helpers.EnumType;
@@ -71,6 +76,34 @@ namespace WeeloAPI.Helpers
             return true;
         }
 
+        //Method to save an image in firebase storage
+        public async Task<string> UpLoadImage(Stream stream, string fileName, IConfiguration config)
+        {
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(config.GetSection("Storage")["ApiKey"]));
+            var a = await auth.SignInWithEmailAndPasswordAsync(config.GetSection("Storage")["AuthEmail"], config.GetSection("Storage")["AuthPassword"]);
+
+            var cancellation = new CancellationTokenSource();
+
+            var task = new FirebaseStorage(
+                 config.GetSection("Storage")["Bucket"],
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                    ThrowOnCancel = true
+                })
+                .Child("Property")
+                .Child(fileName)
+                .PutAsync(stream, cancellation.Token);
+
+            try
+            {
+                return await task;
+            }
+            catch (Exception ex)
+            {
+                throw new NotImplementedException(ex.Message);
+            }
+        }
 
     }
 }

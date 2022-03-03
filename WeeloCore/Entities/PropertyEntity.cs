@@ -41,7 +41,7 @@ namespace WeeloCore.Entities
         public Guid? IdOwner { get; set; }
         public virtual AccountEntity Owner { get; set; }
         public virtual ZoneInfoEntity Zone { get; set; }
-        public virtual List<PropertyImageEntity> PropertyImages { get; set; }
+        public virtual List<PropertyImageBasicEntity> PropertyImages { get; set; }
         public virtual List<PropertyTraceEntity> PropertyTraces { get; set; }
 
     }
