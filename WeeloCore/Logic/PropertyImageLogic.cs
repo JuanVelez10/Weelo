@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +18,14 @@ namespace WeeloCore.Logic
     {
         private readonly IMapper mapper;
         private PropertyImageRepository propertyImageRepository;
+        private PropertyRepository propertyRepository;
         private Tools tools;
 
         public PropertyImageLogic(IMapper mapper)
         {
             this.mapper = mapper;
             propertyImageRepository = new PropertyImageRepository();
+            propertyRepository = new PropertyRepository();
             tools = new Tools();
         }
 
@@ -52,14 +56,30 @@ namespace WeeloCore.Logic
         //Method to create new image of property
         public BaseResponse<PropertyImageEntity> Insert(PropertyImageEntity @object)
         {
+            throw new NotImplementedException();
+        }
+
+        //Method to create new image of property
+        public BaseResponse<PropertyImageEntity> New(IConfiguration config,HttpRequest request)
+        {
             BaseResponse<PropertyImageEntity> response = new BaseResponse<PropertyImageEntity>();
 
-            if (string.IsNullOrEmpty(@object.Url)) return MessageResponse(3, MessageType.Error, "Image");
-            if (tools.isImage(@object.Url)) return MessageResponse(3, MessageType.Error, "Image");
-
+            response = ValidateRequest(request);
             if (response.Code > 0) return response;
 
-            var propertyImage = propertyImageRepository.Insert(mapper.Map<PropertyImage>(@object));
+            var idProperty = request.Form.Where(x => x.Key == "id").FirstOrDefault().Value;
+            var file = request.Form.Files.Where(x => x.Name == "image" && x.Length > 0).FirstOrDefault();
+
+            response = ValidateProperty(idProperty);
+            if (response.Code > 0) return response;
+
+            response = ValidateImage(file.FileName);
+            if (response.Code > 0) return response;
+
+            var urlImage = tools.UpLoadImage(file.OpenReadStream(), file.FileName, config).Result;
+            if (string.IsNullOrEmpty(urlImage)) return MessageResponse(3, MessageType.Error, "Image");
+
+            var propertyImage = propertyImageRepository.Insert(mapper.Map<PropertyImage>(new PropertyImageEntity(urlImage,Guid.Parse(idProperty))));
 
             if (propertyImage == null) return MessageResponse(6, MessageType.Error);
 
@@ -126,6 +146,40 @@ namespace WeeloCore.Logic
             response.Data = mapper.Map<PropertyImageEntity>(property);
 
             return response;
+        }
+
+        //Method to Validate Request image
+        private BaseResponse<PropertyImageEntity> ValidateRequest(HttpRequest request)
+        {
+            if (request.Form == null) return MessageResponse(4, MessageType.Error, "Data");
+            if (!request.Form.Keys.Any()) return MessageResponse(4, MessageType.Error, "Id");
+            if (!request.Form.Where(x => x.Key == "id").Any()) return MessageResponse(4, MessageType.Error, "Id");
+            if (!request.Form.Files.Any()) return MessageResponse(4, MessageType.Error, "Image");
+            if (!request.Form.Files.Where(x => x.Name == "image" && x.Length > 0).Any()) return MessageResponse(4, MessageType.Error, "Image");
+
+            return new BaseResponse<PropertyImageEntity>();
+
+        }
+
+        //Method to Validate property string
+        private BaseResponse<PropertyImageEntity> ValidateProperty(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return MessageResponse(4, MessageType.Error, "Id");
+            Guid guidProperty;
+            if (!Guid.TryParse(id, out guidProperty)) return MessageResponse(5, MessageType.Error, "Id");
+            var property = propertyRepository.Get(Guid.Parse(id));
+            if (property == null) return MessageResponse(3, MessageType.Error, "Property");
+
+            return new BaseResponse<PropertyImageEntity>();
+        }
+
+        //Method to Validate image string
+        public BaseResponse<PropertyImageEntity> ValidateImage(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return MessageResponse(3, MessageType.Error, "Image");
+            if (!tools.IsImage(fileName)) return MessageResponse(3, MessageType.Error, "Image");
+
+            return new BaseResponse<PropertyImageEntity>();
         }
 
 

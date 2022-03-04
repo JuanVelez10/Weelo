@@ -57,27 +57,8 @@ namespace WeeloAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Post()
         {
-            var response = toolsConfig.ValidateRequest(Request);
-            if(response.Code > 0) return BadRequest(response);
-
-            var idProperty = Request.Form.Where(x => x.Key == "id").FirstOrDefault().Value;
-            var file = Request.Form.Files.Where(x => x.Name == "image" && x.Length > 0).FirstOrDefault();
-
-            response = toolsConfig.ValidateGuid(idProperty);
-            if (response.Code > 0) return BadRequest(response);
-
-            response = toolsConfig.ValidateFile(file.FileName);
-            if (response.Code > 0) return BadRequest(response);
-
-            var urlImage = toolsConfig.UpLoadImage(file.OpenReadStream(), file.FileName, config).Result;
-
-            var propertyGuid = Guid.Parse(idProperty);
-            var property = propertyLogic.Get(propertyGuid);
-            if (property == null) return BadRequest(toolsConfig.MessageResponse(3, MessageType.Error, "Property"));
-
-            var responseLogic = propertyImageLogic.Insert(new PropertyImageEntity(urlImage, propertyGuid));
+            var responseLogic = propertyImageLogic.New(config, Request);
             if (responseLogic != null) return Ok(responseLogic);
-            
             return BadRequest();
         }
 
