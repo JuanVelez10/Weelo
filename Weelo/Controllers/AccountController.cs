@@ -18,7 +18,6 @@ namespace WeeloAPI.Controllers
     //In this class all the services associated with the account are consumed, for example the login
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Client")]
     public class AccountController : ControllerBase
     {
         private readonly IMapper mapper;
@@ -53,6 +52,7 @@ namespace WeeloAPI.Controllers
         // GET api/<AccountController>/f3a2ab2c-3b73-4fe9-a176-72d75973ea72
         //Method to get a specific account
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Client")]
         public IActionResult Get(Guid? Id)
         {
             var account = accountLogic.Get(Id);
@@ -64,6 +64,7 @@ namespace WeeloAPI.Controllers
         //Method to get a specific logged account
         [HttpGet]
         [Route("Logged")]
+        [Authorize(Roles = "Admin,Client")]
         public IActionResult Logged()
         {
             var account = toolsConfig.GetToken(Request);

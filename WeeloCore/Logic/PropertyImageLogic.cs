@@ -30,9 +30,16 @@ namespace WeeloCore.Logic
             throw new NotImplementedException();
         }
 
+        //Method to get a specific image of property
         public PropertyImageEntity Get(Guid? id)
         {
-            throw new NotImplementedException();
+            var property = new PropertyImageEntity();
+
+            if (id.HasValue)
+            {
+                property = mapper.Map<PropertyImageEntity>(propertyImageRepository.Get(id));
+            }
+            return property;
         }
 
         public List<PropertyImageEntity> GetAll()
@@ -95,6 +102,27 @@ namespace WeeloCore.Logic
             response.MessageType = messageType;
             return response;
         }
+
+        //Method to update enable image of property
+        public BaseResponse<PropertyImageEntity> UpdatePropertyImageEnable(Guid? id, bool enable)
+        {
+            BaseResponse<PropertyImageEntity> response = new BaseResponse<PropertyImageEntity>();
+
+            if (!id.HasValue) return MessageResponse(4, MessageType.Error, "Image");
+            var exitspropertyImage = Get(id);
+            if (exitspropertyImage == null) return MessageResponse(3, MessageType.Error, "Image");
+
+            var property = propertyImageRepository.UpdateEnable(id, enable);
+
+            if (property == null) return MessageResponse(6, MessageType.Error);
+
+            response = MessageResponse(1, MessageType.Success, "Image");
+            response.Data = mapper.Map<PropertyImageEntity>(property);
+
+            return response;
+        }
+
+
     }
 
 }

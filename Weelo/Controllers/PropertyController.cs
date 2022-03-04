@@ -16,7 +16,6 @@ namespace WeeloAPI.Controllers
     //In this class, all the services associated with the properties or dwellings are consumed.
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class PropertyController : ControllerBase
     {
         private readonly IMapper mapper;
@@ -31,6 +30,7 @@ namespace WeeloAPI.Controllers
         // GET api/<PropertyController>
         //Method to get all system properties
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var properties = new List<PropertyEntity>();
@@ -75,6 +75,7 @@ namespace WeeloAPI.Controllers
         // POST api/<PropertyController>
         //Method to add a new property
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Post([FromBody] PropertyRequest propertyRequest)
         {
             var response = propertyLogic.Insert(mapper.Map<PropertyEntity>(propertyRequest));
@@ -85,6 +86,7 @@ namespace WeeloAPI.Controllers
         // PUT api/<PropertyController>
         //Method to update a property
         [HttpPut()]
+        [Authorize(Roles = "Admin")]
         public IActionResult Put(int id, [FromBody] PropertyRequest propertyRequest)
         {
             var response = propertyLogic.Update(mapper.Map<PropertyEntity>(propertyRequest));
@@ -95,6 +97,7 @@ namespace WeeloAPI.Controllers
         // DELETE api/<PropertyController>/c9f60fd2-1a6a-415c-9fc2-10fb73d62b46
         //Method to delete a property
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(Guid? id)
         {
             var response = propertyLogic.Delete(id);
@@ -106,6 +109,7 @@ namespace WeeloAPI.Controllers
         //Method to delete a property
         [HttpPatch()]
         [Route("Enable")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Enable(Guid? id, bool enable)
         {
             var response = propertyLogic.UpdatePropertyEnable(id, enable);
@@ -117,6 +121,7 @@ namespace WeeloAPI.Controllers
         //Method to delete a property
         [HttpPatch()]
         [Route("Price")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Price(Guid? id, decimal price)
         {
             var response = propertyLogic.UpdatePropertyPrice(id, price);

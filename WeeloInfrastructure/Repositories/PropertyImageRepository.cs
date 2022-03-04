@@ -16,7 +16,7 @@ namespace WeeloInfrastructure.Repositories
 
         public override PropertyImage Get(Guid? id)
         {
-            throw new NotImplementedException();
+            return weeloDBContext.PropertyImages.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public override List<PropertyImage> GetAll()
@@ -26,12 +26,22 @@ namespace WeeloInfrastructure.Repositories
 
         public override PropertyImage Insert(PropertyImage @object)
         {
-            throw new NotImplementedException();
+            var propertyImage = weeloDBContext.PropertyImages.Add(@object).Entity;
+            weeloDBContext.SaveChanges();
+            return propertyImage;
         }
 
         public override PropertyImage Update(PropertyImage @object)
         {
             throw new NotImplementedException();
+        }
+
+        public PropertyImage UpdateEnable(Guid? id, bool enable)
+        {
+            var propertyImage = Get(id);
+            propertyImage.Enabled = enable;
+            weeloDBContext.SaveChanges();
+            return propertyImage;
         }
 
         public PropertyImage GetFirstForIdProperty(Guid? idProperty)

@@ -11,6 +11,7 @@ namespace WeeloCore.Entities
     {
         public Guid Id { get; set; }
         public Guid IdZone { get; set; }
+        public Guid IdOwner { get; set; }
         public int CodeInternal { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }

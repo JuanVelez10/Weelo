@@ -17,7 +17,6 @@ namespace WeeloAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class PropertyImageController : ControllerBase
     {
         private readonly IMapper mapper;
@@ -55,6 +54,7 @@ namespace WeeloAPI.Controllers
         //Method to add a image of property
         [HttpPost]
         [Route("")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Post()
         {
             if (Request.Form == null) return BadRequest();
@@ -90,10 +90,11 @@ namespace WeeloAPI.Controllers
         //Method to enable a image of property
         [HttpPatch()]
         [Route("Enable")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Enable(Guid? id, bool enable)
         {
-            //var response = propertyImageLogic.UpdatePropertyEnable(id, enable);
-            //if (response != null) return Ok(response);
+            var response = propertyImageLogic.UpdatePropertyImageEnable(id, enable);
+            if (response != null) return Ok(response);
             return BadRequest();
         }
 

@@ -8,6 +8,8 @@ namespace WeeloCore.Entities
 {
     public  class PropertyImageEntity
     {
+        public PropertyImageEntity() { }
+
         public PropertyImageEntity(string Url, Guid? IdProperty)
         {
             this.Url = Url;

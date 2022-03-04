@@ -44,6 +44,7 @@ namespace WeeloAPI.Controllers
 
         // POST api/<PropertyTraceController>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public void Post([FromBody] string value)
         {
 
