@@ -10,6 +10,7 @@ using WeeloAPI.Helpers;
 using WeeloAPI.References;
 using WeeloCore.Entities;
 using WeeloCore.Logic;
+using static WeeloCore.Helpers.EnumType;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -53,40 +54,34 @@ namespace WeeloAPI.Controllers
         //POST api/<PropertyImageController>
         //Method to add a image of property
         [HttpPost]
-        [Route("")]
         [Authorize(Roles = "Admin")]
         public IActionResult Post()
         {
-            if (Request.Form == null) return BadRequest();
-            if (!Request.Form.Files.Any()) return BadRequest();
-            if (!Request.Form.Keys.Any()) return BadRequest();
+            var response = toolsConfig.ValidateRequest(Request);
+            if(response.Code > 0) return BadRequest(response);
 
-            var urlImage = string.Empty;
-            var idProperty = string.Empty;
+            var idProperty = Request.Form.Where(x => x.Key == "id").FirstOrDefault().Value;
+            var file = Request.Form.Files.Where(x => x.Name == "image" && x.Length > 0).FirstOrDefault();
 
-            if (!Request.Form.Where(x => x.Key == "id").Any()) return BadRequest();
-            idProperty = Request.Form.Where(x => x.Key == "id").FirstOrDefault().Value;
-            if (string.IsNullOrEmpty(idProperty)) return BadRequest();
+            response = toolsConfig.ValidateGuid(idProperty);
+            if (response.Code > 0) return BadRequest(response);
 
-            Guid guidProperty;
-            if (Guid.TryParse(idProperty, out guidProperty))
-            {
-                var property = propertyLogic.Get(guidProperty);
-                if (property == null) NotFound();
+            response = toolsConfig.ValidateFile(file.FileName);
+            if (response.Code > 0) return BadRequest(response);
 
-                if (!Request.Form.Files.Where(x => x.Name == "image" && x.Length > 0).Any()) return BadRequest();
-                var file = Request.Form.Files.Where(x => x.Name == "image" && x.Length > 0).FirstOrDefault();
-                urlImage = toolsConfig.UpLoadImage(file.OpenReadStream(), file.FileName, config).Result;
-                if (string.IsNullOrEmpty(urlImage)) return BadRequest();
+            var urlImage = toolsConfig.UpLoadImage(file.OpenReadStream(), file.FileName, config).Result;
 
-                var response = propertyImageLogic.Insert(new PropertyImageEntity(urlImage, property.Id));
-                if (response != null) return Ok(response);
-            }
+            var propertyGuid = Guid.Parse(idProperty);
+            var property = propertyLogic.Get(propertyGuid);
+            if (property == null) return BadRequest(toolsConfig.MessageResponse(3, MessageType.Error, "Property"));
 
+            var responseLogic = propertyImageLogic.Insert(new PropertyImageEntity(urlImage, propertyGuid));
+            if (responseLogic != null) return Ok(responseLogic);
+            
             return BadRequest();
         }
 
-        // PATCH api/<PropertyController>/Enable
+        //PATCH api/<PropertyImageController>/Enable
         //Method to enable a image of property
         [HttpPatch()]
         [Route("Enable")]

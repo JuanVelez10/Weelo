@@ -25,6 +25,7 @@ namespace WeeloCore.Logic
             tools = new Tools();
         }
 
+        //Method to delete image of property
         public BaseResponse<PropertyImageEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
@@ -42,28 +43,33 @@ namespace WeeloCore.Logic
             return property;
         }
 
+        //Method to get all images
         public List<PropertyImageEntity> GetAll()
         {
             throw new NotImplementedException();
         }
 
+        //Method to create new image of property
         public BaseResponse<PropertyImageEntity> Insert(PropertyImageEntity @object)
         {
             BaseResponse<PropertyImageEntity> response = new BaseResponse<PropertyImageEntity>();
 
-           // response = Validate(@object, true);
+            if (string.IsNullOrEmpty(@object.Url)) return MessageResponse(3, MessageType.Error, "Image");
+            if (tools.isImage(@object.Url)) return MessageResponse(3, MessageType.Error, "Image");
+
             if (response.Code > 0) return response;
 
-            var property = propertyImageRepository.Insert(mapper.Map<PropertyImage>(@object));
+            var propertyImage = propertyImageRepository.Insert(mapper.Map<PropertyImage>(@object));
 
-            if (property == null) return MessageResponse(6, MessageType.Error);
+            if (propertyImage == null) return MessageResponse(6, MessageType.Error);
 
-            response = MessageResponse(1, MessageType.Success, "Property");
-            response.Data = mapper.Map<PropertyImageEntity>(property);
+            response = MessageResponse(1, MessageType.Success, "Image");
+            response.Data = mapper.Map<PropertyImageEntity>(propertyImage);
 
             return response;
         }
 
+        //Method to update image of property
         public BaseResponse<PropertyImageEntity> Update(PropertyImageEntity @object)
         {
             throw new NotImplementedException();

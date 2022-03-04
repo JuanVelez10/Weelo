@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WeeloCore.Entities;
 using WeeloInfrastructure.Repositories;
@@ -23,6 +24,13 @@ namespace WeeloCore.Helpers
         public string GetMessage(int Code, MessageType messageType)
         {
             return messageRepository.GetAll().Where(x => x.Code == Code && x.MessageType == (int)messageType).Select(x => x.Message1).FirstOrDefault();
+        }
+
+        //Method to validate image
+        public bool isImage(string image)
+        {
+            if (Regex.IsMatch(image.ToLower(), @"^.*\.(jpg|gif|png|jpeg)$")) return true;
+            return false;
         }
 
     }

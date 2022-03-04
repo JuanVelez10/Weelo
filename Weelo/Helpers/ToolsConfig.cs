@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WeeloAPI.References;
 using WeeloCore.Entities;
+using WeeloCore.Helpers;
 using static WeeloCore.Helpers.EnumType;
 
 namespace WeeloAPI.Helpers
@@ -20,6 +21,8 @@ namespace WeeloAPI.Helpers
     //Class for general api configuration methods
     public class ToolsConfig
     {
+        private Tools tools = new Tools();
+
         //Method to generate token per account
         public string Generate(IConfiguration config,AccountEntity account)
         {
@@ -74,6 +77,47 @@ namespace WeeloAPI.Helpers
             var bearerToken = request.Headers["Authorization"].ToString();
             token = bearerToken.Replace("Bearer ","");
             return true;
+        }
+
+        //Method to Validate Request image
+        public BaseResponse<bool> ValidateRequest(HttpRequest request)
+        {
+            if (request.Form == null) return MessageResponse(4, MessageType.Error, "Data");
+            if (!request.Form.Keys.Any()) return MessageResponse(4, MessageType.Error, "Id");
+            if (!request.Form.Where(x => x.Key == "id").Any()) return MessageResponse(4, MessageType.Error, "Id");
+            if (!request.Form.Files.Any()) return MessageResponse(4, MessageType.Error, "Image");
+            if (!request.Form.Files.Where(x => x.Name == "image" && x.Length > 0).Any()) return MessageResponse(4, MessageType.Error, "Image");
+
+            return new BaseResponse<bool>();
+
+        }
+
+        //Method to Validate property string
+        public BaseResponse<bool> ValidateGuid(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return MessageResponse(4, MessageType.Error, "Id");
+            Guid guidProperty;
+            if (!Guid.TryParse(id, out guidProperty)) return MessageResponse(5, MessageType.Error, "Id");
+
+            return new BaseResponse<bool>();
+        }
+
+        //Method to Validate image string
+        public BaseResponse<bool> ValidateFile(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return MessageResponse(4, MessageType.Error, "File");
+
+            return new BaseResponse<bool>();
+        }
+
+        //Method to return response message
+        public BaseResponse<bool> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
+        {
+            BaseResponse<bool> response = new BaseResponse<bool>();
+            response.Code = code;
+            response.Message = String.Format("{0} {1}", tools.GetMessage(code, messageType), additionalMessage);
+            response.MessageType = messageType;
+            return response;
         }
 
         //Method to save an image in firebase storage
