@@ -7,10 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WeeloAPI.Helpers;
-using WeeloAPI.References;
 using WeeloCore.Entities;
 using WeeloCore.Logic;
-using static WeeloCore.Helpers.EnumType;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,8 +21,6 @@ namespace WeeloAPI.Controllers
         private readonly IMapper mapper;
         private readonly IConfiguration config;
         private PropertyImageLogic propertyImageLogic;
-        private PropertyLogic propertyLogic;
-        private ToolsConfig toolsConfig;
 
         public PropertyImageController(IMapper mapper, IConfiguration iConfig)
         {
