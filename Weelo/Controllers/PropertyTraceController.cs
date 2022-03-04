@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WeeloAPI.References;
 using WeeloCore.Entities;
 using WeeloCore.Logic;
 
@@ -45,10 +46,11 @@ namespace WeeloAPI.Controllers
         // POST api/<PropertyTraceController>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] PropertyTraceRequest propertyTraceRequest)
         {
-
-
+            var responseLogic = propertyTraceLogic.Insert(mapper.Map<PropertyTraceEntity>(propertyTraceRequest));
+            if (responseLogic != null) return Ok(responseLogic);
+            return BadRequest();
         }
 
     }

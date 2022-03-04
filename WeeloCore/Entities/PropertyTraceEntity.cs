@@ -18,6 +18,7 @@ namespace WeeloCore.Entities
         public string NameOwnerNew { get; set; }
         public Guid? OwnerOld { get; set; }
         public string NameOwnerOld { get; set; }
+        public Guid? IdProperty { get; set; }
 
     }
 }

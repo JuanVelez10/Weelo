@@ -26,7 +26,33 @@ namespace WeeloInfrastructure.Repositories
 
         public override PropertyTrace Insert(PropertyTrace @object)
         {
-            throw new NotImplementedException();
+            var propertyTrace = new PropertyTrace();
+            using (var dbContextTransaction = weeloDBContext.Database.BeginTransaction())
+            {
+
+                try
+                {
+                    var date = DateTime.Now;
+                    @object.Create = date;
+                    propertyTrace = weeloDBContext.PropertyTraces.Add(@object).Entity;
+
+                    var property = weeloDBContext.Properties.Where(x => x.Id == @object.IdProperty).FirstOrDefault();
+                    property.IdOwner = @object.OwnerNew;
+                    property.Price = @object.Value;
+                    property.Update = date;
+
+                    weeloDBContext.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+                catch
+                {
+                    dbContextTransaction.Rollback();
+                    propertyTrace = null;
+                }
+            }
+
+            return propertyTrace;
+
         }
 
         public override PropertyTrace Update(PropertyTrace @object)
