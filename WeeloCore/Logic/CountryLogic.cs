@@ -35,7 +35,10 @@ namespace WeeloCore.Logic
 
         public List<CountryEntity> GetAll()
         {
-            throw new NotImplementedException();
+            var countriesEntity = new List<CountryEntity>();
+            var countries = countryRepository.GetAll();
+            if (countries.Any()) countriesEntity = countries.Select(x => mapper.Map<CountryEntity>(x)).ToList();
+            return countriesEntity;
         }
 
         public BaseResponse<CountryEntity> Insert(CountryEntity @object)

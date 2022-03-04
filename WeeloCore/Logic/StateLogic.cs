@@ -41,7 +41,10 @@ namespace WeeloCore.Logic
 
         public List<StateEntity> GetAll()
         {
-            throw new NotImplementedException();
+            var statesEntity = new List<StateEntity>();
+            var states = stateRepository.GetAll();
+            if (states.Any()) statesEntity = states.Select(x => mapper.Map<StateEntity>(x)).ToList();
+            return statesEntity;
         }
 
         public BaseResponse<StateEntity> Insert(StateEntity @object)

@@ -27,8 +27,6 @@ namespace WeeloAPI.Controllers
             this.mapper = mapper;
             config = iConfig;
             propertyImageLogic = new PropertyImageLogic(mapper);
-            propertyLogic = new PropertyLogic(mapper);
-            toolsConfig = new ToolsConfig();
         }
 
         //GET: api/<PropertyImageController>/Property/c9f60fd2-1a6a-415c-9fc2-10fb73d62b46

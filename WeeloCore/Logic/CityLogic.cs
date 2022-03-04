@@ -41,7 +41,10 @@ namespace WeeloCore.Logic
 
         public List<CityEntity> GetAll()
         {
-            throw new NotImplementedException();
+            var citiesEntity = new List<CityEntity>();
+            var cities = cityRepository.GetAll();
+            if (cities.Any()) citiesEntity = cities.Select(x => mapper.Map<CityEntity>(x)).ToList();
+            return citiesEntity;
         }
 
         public BaseResponse<CityEntity> Insert(CityEntity @object)

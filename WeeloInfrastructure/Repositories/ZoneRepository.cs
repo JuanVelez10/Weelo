@@ -21,7 +21,7 @@ namespace WeeloInfrastructure.Repositories
 
         public override List<Zone> GetAll()
         {
-            throw new NotImplementedException();
+            return weeloDBContext.Zones.ToList();
         }
 
         public override Zone Insert(Zone @object)

@@ -87,7 +87,10 @@ namespace WeeloCore.Logic
 
         public List<ZoneEntity> GetAll()
         {
-            throw new NotImplementedException();
+            var zonesEntity = new List<ZoneEntity>();
+            var zones = zoneRepository.GetAll();
+            if (zones.Any()) zonesEntity = zones.Select(x => mapper.Map<ZoneEntity>(x)).ToList();
+            return zonesEntity;
         }
 
         public BaseResponse<ZoneEntity> Insert(ZoneEntity @object)

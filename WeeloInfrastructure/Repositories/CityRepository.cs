@@ -21,7 +21,7 @@ namespace WeeloInfrastructure.Repositories
 
         public override List<City> GetAll()
         {
-            throw new NotImplementedException();
+            return weeloDBContext.Cities.ToList();
         }
 
         public override City Insert(City @object)

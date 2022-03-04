@@ -21,7 +21,7 @@ namespace WeeloInfrastructure.Repositories
 
         public override List<State> GetAll()
         {
-            throw new NotImplementedException();
+            return weeloDBContext.States.ToList();
         }
 
         public override State Insert(State @object)

@@ -21,7 +21,7 @@ namespace WeeloInfrastructure.Repositories
 
         public override List<Country> GetAll()
         {
-            throw new NotImplementedException();
+            return weeloDBContext.Countries.ToList();
         }
 
         public override Country Insert(Country @object)
