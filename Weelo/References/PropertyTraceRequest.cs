@@ -9,13 +9,31 @@ namespace WeeloAPI.References
     public class PropertyTraceRequest : IValidatableObject
     {
         private Tools tools = new Tools();
+
         public Guid Id { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
         public DateTime? DateSale { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 10)]
+        [DataType(DataType.Text)]
         public string Name { get; set; }
+
+        [Required]
+        [DataType(DataType.Currency)]
         public decimal Value { get; set; }
+
+        [Required]
+        [DataType(DataType.Currency)]
         public decimal Tax { get; set; }
+
+        [Required]
         public Guid? OwnerNew { get; set; }
+        [Required]
         public Guid? OwnerOld { get; set; }
+        [Required]
         public Guid? IdProperty { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

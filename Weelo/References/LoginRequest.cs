@@ -8,7 +8,13 @@ namespace WeeloAPI.References
     public class LoginRequest : IValidatableObject
     {
         private Tools tools = new Tools();
+
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
