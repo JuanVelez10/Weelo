@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,13 @@ namespace WeeloAPI.Controllers
     public class PropertyController : ControllerBase
     {
         private readonly IMapper mapper;
+        private readonly IConfiguration config;
         private PropertyLogic propertyLogic;
 
-        public PropertyController(IMapper mapper)
+        public PropertyController(IMapper mapper, IConfiguration iConfig)
         {
             this.mapper = mapper;
+            config = iConfig;
             propertyLogic = new PropertyLogic(mapper);
         }
 
@@ -65,7 +68,8 @@ namespace WeeloAPI.Controllers
 
             await Task.Run(() =>
             {
-                properties = propertyLogic.Find(mapper.Map<FindPropertyEntity>(findPropertyRequest));
+                var itemsForPage = Convert.ToInt32( config.GetSection("Page")["ItemsForPage"]);
+                properties = propertyLogic.Find(mapper.Map<FindPropertyEntity>(findPropertyRequest), itemsForPage);
             });
 
             if (properties.Any()) return Ok(properties);

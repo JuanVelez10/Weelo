@@ -44,6 +44,10 @@ namespace WeeloCore.Entities
         public int RoomsMax { get; set; }
 
         [Required]
+        [RegularExpression("[0-9]*", ErrorMessage = "Only numeric value")]
+        public int Page { get; set; }
+
+        [Required]
         public PropertyType PropertyType { get; set; } = PropertyType.None;
         [Required]
         public ConditionType ConditionType { get; set; } = ConditionType.None;

@@ -16,12 +16,10 @@ namespace WeeloAPI.References
         public Guid? IdZone { get; set; }
 
         [Required]
-        [Range(1900, 3000)]
         [RegularExpression("[0-9]*",ErrorMessage = "Only numeric value")]
         public int YearMin { get; set; }
 
         [Required]
-        [Range(1900, 3000)]
         [RegularExpression("[0-9]*", ErrorMessage = "Only numeric value")]
         public int YearMax { get; set; } = DateTime.Now.Year;
 
@@ -34,14 +32,16 @@ namespace WeeloAPI.References
         public decimal PriceMax { get; set; }
 
         [Required]
-        [Range(1, 50)]
         [RegularExpression("[0-9]*", ErrorMessage = "Only numeric value")]
         public int RoomsMin { get; set; }
 
         [Required]
-        [Range(1, 50)]
         [RegularExpression("[0-9]*", ErrorMessage = "Only numeric value")]
         public int RoomsMax { get; set; }
+
+        [Required]
+        [RegularExpression("[0-9]*", ErrorMessage = "Only numeric value")]
+        public int Page { get; set; }
 
         [Required]
         public PropertyType PropertyType { get; set; } = PropertyType.None;

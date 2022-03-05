@@ -35,7 +35,7 @@ namespace WeeloCore.Logic
         }
 
         //Method to search for properties by city, area, price, year, room number among other filters
-        public List<PropertyBasicEntity> Find(FindPropertyEntity find)
+        public List<PropertyBasicEntity> Find(FindPropertyEntity find,int itemsForPage)
         {
             var properties = new List<PropertyBasicEntity>();
 
@@ -46,7 +46,7 @@ namespace WeeloCore.Logic
                 properties = Filter(properties, find);
             }
 
-            return properties;
+            return properties.Skip(itemsForPage * find.Page).Take(itemsForPage).ToList();
         }
 
         //Method to get a specific property,with detailed information
