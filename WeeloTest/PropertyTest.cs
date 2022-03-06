@@ -10,6 +10,7 @@ using WeeloAPI.Controllers;
 using WeeloAPI.Helpers;
 using WeeloAPI.References;
 using WeeloCore.Entities;
+using static WeeloCore.Helpers.EnumType;
 
 namespace WeeloTest
 {
@@ -90,7 +91,6 @@ namespace WeeloTest
         [Test]
         public async Task FindSucces()
         {
-            Assert.IsTrue(propertyController.GetAll().Wait(60000));
             var reponseCities = await cityController.Get() as OkObjectResult;
             var cities = reponseCities.Value as List<CityEntity>;
             var city = cities.FirstOrDefault();
@@ -111,10 +111,51 @@ namespace WeeloTest
         public async Task FindError()
         {
             FindPropertyRequest findPropertyRequest = new FindPropertyRequest(Guid.NewGuid());
-            Assert.IsFalse(propertyController.Find(findPropertyRequest).Wait(0));
             var reponseBadRequest = await propertyController.Find(findPropertyRequest) as BadRequestObjectResult;
             Assert.IsNotNull(reponseBadRequest);
             Assert.AreEqual(400, reponseBadRequest.StatusCode);
+
+        }
+
+        //Test: To validate that a property exists to be able to add, update or delete
+        [Test]
+        public async Task ValidateExist()
+        {
+            var reponseProperty = await propertyController.GetAll() as OkObjectResult;
+            var properties = reponseProperty.Value as List<PropertyEntity>;
+            var property = properties.FirstOrDefault();
+
+            var propertyRequest = GetIMapper().Map<PropertyRequest>(property);
+
+            var reponseProperties = propertyController.Validate(propertyRequest,true) as OkObjectResult;
+            Assert.IsNotNull(reponseProperties);
+            Assert.AreEqual(200, reponseProperties.StatusCode);
+            var propertyOutput = reponseProperties.Value as BaseResponse<PropertyEntity>;
+            Assert.IsNotNull(propertyOutput);
+            Assert.AreEqual(MessageType.Error, propertyOutput.MessageType);
+            Assert.AreEqual(7, propertyOutput.Code);  
+
+        }
+
+        //Test: To validate that a property not exists to be able to add, update or delete
+        [Test]
+        public async Task ValidateNoExist()
+        {
+            var reponseProperty = await propertyController.GetAll() as OkObjectResult;
+            var properties = reponseProperty.Value as List<PropertyEntity>;
+            var property = properties.FirstOrDefault();
+
+            var propertyRequest = GetIMapper().Map<PropertyRequest>(property);
+            propertyRequest.Id = new Guid();
+            propertyRequest.Address = Guid.NewGuid().ToString();
+
+            var reponseProperties = propertyController.Validate(propertyRequest, true) as OkObjectResult;
+            Assert.IsNotNull(reponseProperties);
+            Assert.AreEqual(200, reponseProperties.StatusCode);
+            var propertyOutput = reponseProperties.Value as BaseResponse<PropertyEntity>;
+            Assert.IsNotNull(propertyOutput);
+            Assert.AreEqual(MessageType.None, propertyOutput.MessageType);
+            Assert.AreEqual(0, propertyOutput.Code);
 
         }
 

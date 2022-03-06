@@ -38,7 +38,7 @@ namespace WeeloAPI.Controllers
             });
 
             if (countries.Any()) return Ok(countries);
-            return NotFound();
+            return NotFound(countries);
         }
 
     }

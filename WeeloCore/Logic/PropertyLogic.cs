@@ -279,7 +279,7 @@ namespace WeeloCore.Logic
         }
 
         //Method to Validate property
-        private BaseResponse<PropertyEntity> Validate(PropertyEntity propertyInfoEntity, bool add)
+        public BaseResponse<PropertyEntity> Validate(PropertyEntity propertyInfoEntity, bool add)
         {
             if (!propertyInfoEntity.IdZone.HasValue) return MessageResponse(4, MessageType.Error, "Zone");
             var zone = zoneLogic.Get(propertyInfoEntity.IdZone);

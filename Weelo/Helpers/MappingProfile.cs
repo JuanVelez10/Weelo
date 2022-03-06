@@ -16,6 +16,8 @@ namespace WeeloAPI.Helpers
             CreateMap<PropertyRequest, PropertyEntity>();
             CreateMap<PropertyTraceRequest, PropertyTraceEntity>();
 
+            CreateMap<PropertyEntity, PropertyRequest>();
+
             CreateMap<Property, PropertyBasicEntity>();
             CreateMap<Property, PropertyEntity>();
             CreateMap<Account, AccountEntity>();

@@ -39,7 +39,7 @@ namespace WeeloAPI.Controllers
             });
 
             if (states.Any()) return Ok(states);
-            return NotFound();
+            return NotFound(states);
         }
 
     }

@@ -134,5 +134,17 @@ namespace WeeloAPI.Controllers
             return BadRequest(response);
         }
 
+        // Get api/<PropertyController>
+        //Method to validate a property exists to be able to add update or delete
+        [HttpPost()]
+        [Authorize(Roles = "Admin")]
+        [Route("Validate")]
+        public IActionResult Validate([FromBody] PropertyRequest propertyRequest,bool add)
+        {
+            var response = propertyLogic.Validate(mapper.Map<PropertyEntity>(propertyRequest),add);
+            if (response != null) return Ok(response);
+            return BadRequest(response);
+        }
+
     }
 }

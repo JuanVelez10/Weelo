@@ -42,7 +42,7 @@ namespace WeeloAPI.Controllers
             });
 
             if (propertyTraces.Any()) return Ok(propertyTraces);
-            return NotFound();
+            return NotFound(propertyTraces);
         }
 
         // POST api/<PropertyTraceController>
@@ -53,7 +53,7 @@ namespace WeeloAPI.Controllers
         {
             var responseLogic = propertyTraceLogic.Insert(mapper.Map<PropertyTraceEntity>(propertyTraceRequest));
             if (responseLogic != null) return Ok(responseLogic);
-            return BadRequest();
+            return BadRequest(responseLogic);
         }
 
     }

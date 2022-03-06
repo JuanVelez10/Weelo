@@ -44,7 +44,7 @@ namespace WeeloAPI.Controllers
             });
 
             if (propertyImages.Any()) return Ok(propertyImages);
-            return NotFound();
+            return NotFound(propertyImages);
         }
 
         //POST api/<PropertyImageController>
@@ -55,7 +55,7 @@ namespace WeeloAPI.Controllers
         {
             var responseLogic = propertyImageLogic.New(config, Request);
             if (responseLogic != null) return Ok(responseLogic);
-            return BadRequest();
+            return BadRequest(responseLogic);
         }
 
         //PATCH api/<PropertyImageController>/Enable
@@ -67,7 +67,7 @@ namespace WeeloAPI.Controllers
         {
             var response = propertyImageLogic.UpdatePropertyImageEnable(id, enable);
             if (response != null) return Ok(response);
-            return BadRequest();
+            return BadRequest(response);
         }
 
     }
