@@ -10,6 +10,11 @@ namespace WeeloAPI.References
     {
         private Tools tools = new Tools();
 
+        public FindPropertyRequest(Guid? IdCity)
+        {
+            this.IdCity = IdCity;
+        }
+
         [Required]
         public Guid? IdCity { get; set; }
 

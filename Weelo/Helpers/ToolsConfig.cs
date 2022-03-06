@@ -18,40 +18,44 @@ namespace WeeloAPI.Helpers
         private Tools tools = new Tools();
 
         //Method to generate token per account
-        public string Generate(IConfiguration config,AccountEntity account)
+        public string Generate(IConfiguration config, AccountEntity account)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("Jwt")["Key"]));
-            var credencials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            DateTime expires = DateTime.UtcNow.AddMinutes(Convert.ToUInt32(config.GetSection("Jwt")["Time"]));
-
-            var claims = new[]
+            if (account != null)
             {
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("Jwt")["Key"]));
+                var credencials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                DateTime expires = DateTime.UtcNow.AddMinutes(Convert.ToUInt32(config.GetSection("Jwt")["Time"]));
+
+                var claims = new[]
+                {
                     new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
                     new Claim(ClaimTypes.Name, account.Name),
                     new Claim(ClaimTypes.Email, account.Email),
                     new Claim(ClaimTypes.Role, account.RoleType.ToString())
-            };
+                };
 
-            var token = new JwtSecurityToken(
-                config.GetSection("Jwt")["Issuer"],
-                config.GetSection("Jwt")["Audience"],
-                claims,
-                expires: expires,
-                signingCredentials: credencials
-                );
+                var token = new JwtSecurityToken(
+                    config.GetSection("Jwt")["Issuer"],
+                    config.GetSection("Jwt")["Audience"],
+                    claims,
+                    expires: expires,
+                    signingCredentials: credencials
+                    );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+
+            return string.Empty;
         }
 
         //Method to get token by account
-        public AccountEntity GetToken(HttpRequest request)
+        public AccountEntity GetToken(string srtoken)
         {
             AccountEntity account = new AccountEntity();
-            string srtoken;
 
-            if (TryRetrieveToken(request, out srtoken))
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            try
             {
-                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 if (handler.ReadToken(srtoken) is JwtSecurityToken token)
                 {
                     account.Id = Guid.Parse(token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
@@ -60,16 +64,19 @@ namespace WeeloAPI.Helpers
                     account.RoleType = (RoleType)Enum.Parse(typeof(RoleType), token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
                 }
             }
+            catch { }
+
+
             return account;
         }
 
         //Method to validate request authorization header
-        public  bool TryRetrieveToken(HttpRequest request, out string token)
+        public bool TryRetrieveToken(HttpRequest request, out string token)
         {
             token = null;
             if (string.IsNullOrEmpty(request.Headers["Authorization"].ToString())) return false;
             var bearerToken = request.Headers["Authorization"].ToString();
-            token = bearerToken.Replace("Bearer ","");
+            token = bearerToken.Replace("Bearer ", "");
             return true;
         }
 

@@ -219,7 +219,7 @@ namespace WeeloCore.Logic
         {
             if (find != null && properties.Any())
             {
-                if (string.IsNullOrEmpty(find.IdZone.ToString())) properties = properties.Where(x => x.IdZone == find.IdZone).ToList();
+                if (!string.IsNullOrEmpty(find.IdZone.ToString())) properties = properties.Where(x => x.IdZone == find.IdZone).ToList();
                 if (find.YearMin > 0 && find.YearMax > find.YearMin) properties = properties.Where(x => x.Year >= find.YearMin && x.Year <= find.YearMax).ToList();
                 if (find.PriceMin > 0 && find.PriceMax > find.PriceMin) properties = properties.Where(x => x.Price >= find.PriceMin && x.Price <= find.PriceMax).ToList();
                 if (find.RoomsMin > 0 && find.RoomsMax > find.RoomsMin) properties = properties.Where(x => x.Rooms >= find.RoomsMin && x.Rooms <= find.RoomsMax).ToList();

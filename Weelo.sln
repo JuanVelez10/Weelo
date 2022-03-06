@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeeloAPI", "Weelo\WeeloAPI.csproj", "{DFDDD21C-332C-4349-8F4D-1D0C38465E77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeeloCore", "WeeloCore\WeeloCore.csproj", "{AD7E1688-156A-4693-833E-D2C66221BC5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeeloCore", "WeeloCore\WeeloCore.csproj", "{AD7E1688-156A-4693-833E-D2C66221BC5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeeloInfrastructure", "WeeloInfrastructure\WeeloInfrastructure.csproj", "{65D9D092-6484-407D-BE99-0FCA629574CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeeloInfrastructure", "WeeloInfrastructure\WeeloInfrastructure.csproj", "{65D9D092-6484-407D-BE99-0FCA629574CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeeloTest", "WeeloTest\WeeloTest.csproj", "{E5A3E3EE-9D79-44C1-A24E-A19E59C9E80E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{65D9D092-6484-407D-BE99-0FCA629574CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65D9D092-6484-407D-BE99-0FCA629574CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65D9D092-6484-407D-BE99-0FCA629574CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5A3E3EE-9D79-44C1-A24E-A19E59C9E80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5A3E3EE-9D79-44C1-A24E-A19E59C9E80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5A3E3EE-9D79-44C1-A24E-A19E59C9E80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5A3E3EE-9D79-44C1-A24E-A19E59C9E80E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -44,7 +44,7 @@ namespace WeeloAPI.Controllers
             });
 
             if (properties.Any()) return Ok(properties);
-            return NotFound();
+            return NotFound(properties);
         }
 
         // GET api/<PropertyController>/c9f60fd2-1a6a-415c-9fc2-10fb73d62b46
@@ -55,7 +55,7 @@ namespace WeeloAPI.Controllers
         {
             var property = propertyLogic.Get(id);
             if (property != null) return Ok(property);
-            return NotFound();
+            return NotFound(property);
         }
 
         // POST api/<PropertyController>/Find
@@ -74,7 +74,7 @@ namespace WeeloAPI.Controllers
             });
 
             if (properties.Any()) return Ok(properties);
-            return NotFound();
+            return BadRequest(properties);
         }
 
         // POST api/<PropertyController>
@@ -85,7 +85,7 @@ namespace WeeloAPI.Controllers
         {
             var response = propertyLogic.Insert(mapper.Map<PropertyEntity>(propertyRequest));
             if (response != null) return Ok(response);
-            return BadRequest();
+            return BadRequest(response);
         }
 
         // PUT api/<PropertyController>
@@ -96,7 +96,7 @@ namespace WeeloAPI.Controllers
         {
             var response = propertyLogic.Update(mapper.Map<PropertyEntity>(propertyRequest));
             if (response != null) return Ok(response);
-            return BadRequest();
+            return BadRequest(response);
         }
 
         // DELETE api/<PropertyController>/c9f60fd2-1a6a-415c-9fc2-10fb73d62b46
@@ -107,7 +107,7 @@ namespace WeeloAPI.Controllers
         {
             var response = propertyLogic.Delete(id);
             if (response != null) return Ok(response);
-            return BadRequest();
+            return BadRequest(response);
         }
 
         // PATCH api/<PropertyController>/Enable
@@ -119,7 +119,7 @@ namespace WeeloAPI.Controllers
         {
             var response = propertyLogic.UpdatePropertyEnable(id, enable);
             if (response != null) return Ok(response);
-            return BadRequest();
+            return BadRequest(response);
         }
 
         // PATCH api/<PropertyController>/Price
@@ -131,7 +131,7 @@ namespace WeeloAPI.Controllers
         {
             var response = propertyLogic.UpdatePropertyPrice(id, price);
             if (response != null) return Ok(response);
-            return BadRequest();
+            return BadRequest(response);
         }
 
     }

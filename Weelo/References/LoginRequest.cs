@@ -9,6 +9,12 @@ namespace WeeloAPI.References
     {
         private Tools tools = new Tools();
 
+        public LoginRequest(string email, string password)
+        {
+            this.Email = email;
+            this.Password = password;
+        }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }

@@ -47,7 +47,7 @@ namespace WeeloAPI.Controllers
             });
 
             if (accounts.Any()) return Ok(accounts);
-            return NotFound();
+            return NotFound(accounts);
         }
 
         // GET api/<AccountController>/f3a2ab2c-3b73-4fe9-a176-72d75973ea72
@@ -58,7 +58,7 @@ namespace WeeloAPI.Controllers
         {
             var account = accountLogic.Get(Id);
             if (account != null) return Ok(account);
-            return NotFound();
+            return NotFound(account);
         }
 
         // GET api/<AccountController>
@@ -66,15 +66,19 @@ namespace WeeloAPI.Controllers
         [HttpGet]
         [Route("Logged")]
         [Authorize(Roles = "Admin,Client")]
-        public IActionResult Logged()
+        public IActionResult Logged(string token=null)
         {
-            var account = toolsConfig.GetToken(Request);
-            if (account != null) account = accountLogic.Get(account.Id);
-            string srtoken =string.Empty;
-            toolsConfig.TryRetrieveToken(Request, out srtoken);
+            string srtoken = string.Empty;
+
+            if (string.IsNullOrEmpty(token)) toolsConfig.TryRetrieveToken(Request, out srtoken);
+            else srtoken = token;
+
+            var account = toolsConfig.GetToken(srtoken);
+            if (account != null && !string.IsNullOrEmpty(account.Email)) account = accountLogic.Get(account.Id);
+
             account.Token = srtoken;
-            if (account != null) return Ok(account);
-            return NotFound();
+            if (account != null && !string.IsNullOrEmpty(account.Email)) return Ok(account);
+            return NotFound(null);
         }
 
         // POST api/<AccountController>
@@ -85,13 +89,13 @@ namespace WeeloAPI.Controllers
         public IActionResult Login([FromBody] LoginRequest  loginRequest)
         {
             var response = accountLogic.GetAccountLogin(mapper.Map<LoginEntity>(loginRequest));
-            if(response != null)
+            if(response != null && response.Data != null)
             {
                 response.Data.Token = toolsConfig.Generate(config, response.Data);
                 return Ok(response);
             }
 
-            return NotFound();
+            return BadRequest(response);
         }
 
 
