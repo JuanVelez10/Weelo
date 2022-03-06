@@ -10,6 +10,7 @@ using WeeloCore.Logic;
 
 namespace WeeloAPI.Controllers
 {
+    //In this class all the services associated with the country are consumed
     [Route("api/[controller]")]
     [ApiController]
     public class CountryController : ControllerBase
@@ -17,6 +18,7 @@ namespace WeeloAPI.Controllers
         private readonly IMapper mapper;
         private CountryLogic countryLogic;
 
+        //Controller
         public CountryController(IMapper mapper)
         {
             this.mapper = mapper;
@@ -24,6 +26,7 @@ namespace WeeloAPI.Controllers
         }
 
         // GET: api/<CountryController>
+        //Method to get all system countries
         [HttpGet]
         [Authorize(Roles = "Admin,Client")]
         public async Task<IActionResult> Get()

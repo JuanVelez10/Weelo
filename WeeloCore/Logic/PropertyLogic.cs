@@ -23,6 +23,7 @@ namespace WeeloCore.Logic
         private PropertyTraceLogic propertyTraceLogic;
         private Tools tools;
 
+        //Controller
         public PropertyLogic(IMapper mapper)
         {
             this.mapper = mapper;

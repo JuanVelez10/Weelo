@@ -14,6 +14,7 @@ using WeeloCore.Logic;
 
 namespace WeeloAPI.Controllers
 {
+    //In this class all the services associated with the image of property are consumed
     [Route("api/[controller]")]
     [ApiController]
     public class PropertyImageController : ControllerBase
@@ -21,7 +22,8 @@ namespace WeeloAPI.Controllers
         private readonly IMapper mapper;
         private readonly IConfiguration config;
         private PropertyImageLogic propertyImageLogic;
-
+        
+        //Controller
         public PropertyImageController(IMapper mapper, IConfiguration iConfig)
         {
             this.mapper = mapper;

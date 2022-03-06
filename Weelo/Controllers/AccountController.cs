@@ -25,6 +25,7 @@ namespace WeeloAPI.Controllers
         private AccountLogic accountLogic;
         private ToolsConfig toolsConfig;
 
+        //Controller
         public AccountController(IMapper mapper, IConfiguration iConfig)
         {
             this.mapper = mapper;

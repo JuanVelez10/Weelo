@@ -7,23 +7,28 @@ using WeeloInfrastructure.DataBase;
 
 namespace WeeloInfrastructure.Repositories
 {
+    //This class is a repository that connects us to the database
     public class PropertyTraceRepository : GenericRepository<PropertyTrace>
     {
+        //Delete trace of property from database
         public override PropertyTrace Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
 
+        //Get trace of property from database
         public override PropertyTrace Get(Guid? id)
         {
             throw new NotImplementedException();
         }
 
+        //Get all traces of property from database
         public override List<PropertyTrace> GetAll()
         {
             throw new NotImplementedException();
         }
 
+        //Add trace of property from database
         public override PropertyTrace Insert(PropertyTrace @object)
         {
             var propertyTrace = new PropertyTrace();
@@ -55,11 +60,13 @@ namespace WeeloInfrastructure.Repositories
 
         }
 
+        //Update trace of property from database
         public override PropertyTrace Update(PropertyTrace @object)
         {
             throw new NotImplementedException();
         }
 
+        //Get all traces for property from database
         public List<PropertyTrace> GetAllForIdProperty(Guid? idProperty)
         {
             return weeloDBContext.PropertyTraces.Where(x => x.IdProperty == idProperty).ToList();

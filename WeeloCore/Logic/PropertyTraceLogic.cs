@@ -10,6 +10,7 @@ using static WeeloCore.Helpers.EnumType;
 
 namespace WeeloCore.Logic
 {
+    //In this class all the processes associated with the trace of property are managed.
     public class PropertyTraceLogic : ILogic<PropertyTraceEntity>
     {
         private readonly IMapper mapper;
@@ -18,6 +19,7 @@ namespace WeeloCore.Logic
         private AccountLogic accountLogic;
         private Tools tools;
 
+        //Controller
         public PropertyTraceLogic(IMapper mapper)
         {
             this.mapper = mapper;

@@ -11,6 +11,7 @@ using WeeloCore.Logic;
 
 namespace WeeloAPI.Controllers
 {
+    //In this class all the services associated with the state are consumed
     [Route("api/[controller]")]
     [ApiController]
     public class StateController : ControllerBase
@@ -18,6 +19,7 @@ namespace WeeloAPI.Controllers
         private readonly IMapper mapper;
         private StateLogic stateLogic;
 
+        //Controller
         public StateController(IMapper mapper)
         {
             this.mapper = mapper;
@@ -25,6 +27,7 @@ namespace WeeloAPI.Controllers
         }
 
         // GET: api/<StateController>
+        //Method to get all system states
         [HttpGet]
         [Authorize(Roles = "Admin,Client")]
         public async Task<IActionResult> Get()

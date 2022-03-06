@@ -14,6 +14,7 @@ using static WeeloCore.Helpers.EnumType;
 
 namespace WeeloCore.Logic
 {
+    //In this class all the processes associated with the image of property are managed.
     public class PropertyImageLogic : ILogic<PropertyImageEntity>
     {
         private readonly IMapper mapper;
@@ -21,6 +22,7 @@ namespace WeeloCore.Logic
         private PropertyRepository propertyRepository;
         private Tools tools;
 
+        //Controller
         public PropertyImageLogic(IMapper mapper)
         {
             this.mapper = mapper;

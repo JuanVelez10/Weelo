@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeeloInfrastructure.DataBase;
 
 namespace WeeloInfrastructure.Repositories
 {
+    //This class is a repository that connects us to the database
     public class PropertyRepository : GenericRepository<Property>
     {
+        //Delete property from database
         public override Property Delete(Guid? id)
         {
             var property = new Property();
@@ -40,16 +40,19 @@ namespace WeeloInfrastructure.Repositories
             return property;
         }
 
+        //Get property from database
         public override Property Get(Guid? id)
         {
             return weeloDBContext.Properties.Where(x=> x.Id == id).FirstOrDefault();
         }
 
+        //Get all properties from database
         public override List<Property> GetAll()
         {
             return weeloDBContext.Properties.ToList();
         }
 
+        //Add property from database
         public override Property Insert(Property @object)
         {
             var date = DateTime.Now;
@@ -60,6 +63,7 @@ namespace WeeloInfrastructure.Repositories
             return property;
         }
 
+        //Update property from database
         public override Property Update(Property @object)
         {
             var property = Get(@object.Id);
@@ -91,6 +95,7 @@ namespace WeeloInfrastructure.Repositories
             return property;
         }
 
+        //Update price of property from database
         public Property UpdatePrice(Guid? id, decimal price)
         {
             var property = Get(id);
@@ -100,6 +105,7 @@ namespace WeeloInfrastructure.Repositories
             return property;
         }
 
+        //Update property from database
         public Property UpdateEnable(Guid? id, bool enable)
         {
             var property = Get(id);
@@ -109,6 +115,7 @@ namespace WeeloInfrastructure.Repositories
             return property;
         }
 
+        //Get all properties for zones from database
         public List<Property> GetAllForZones(List<Guid> isZones)
         {
             return weeloDBContext.Properties.Where(x => isZones.Contains(x.IdZone)).ToList();

@@ -11,6 +11,7 @@ using WeeloCore.Logic;
 
 namespace WeeloAPI.Controllers
 {
+    //In this class all the services associated with the city are consumed
     [Route("api/[controller]")]
     [ApiController]
     public class CityController : ControllerBase
@@ -18,6 +19,7 @@ namespace WeeloAPI.Controllers
         private readonly IMapper mapper;
         private CityLogic cityLogic;
 
+        //Controller
         public CityController(IMapper mapper)
         {
             this.mapper = mapper;
@@ -25,6 +27,7 @@ namespace WeeloAPI.Controllers
         }
 
         // GET: api/<CityController>
+        //Method to get all system cities
         [HttpGet]
         [Authorize(Roles = "Admin,Client")]
         public async Task<IActionResult> Get()

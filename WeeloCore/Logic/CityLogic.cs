@@ -2,20 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeeloCore.Entities;
 using WeeloCore.Helpers;
 using WeeloInfrastructure.Repositories;
 
 namespace WeeloCore.Logic
 {
+    //In this class all the processes associated with the cities are managed.
     public class CityLogic : ILogic<CityEntity>
     {
         private readonly IMapper mapper;
         private CityRepository cityRepository;
         private StateLogic stateLogic;
 
+        //Controller
         public CityLogic(IMapper mapper)
         {
             this.mapper = mapper;
@@ -23,11 +23,13 @@ namespace WeeloCore.Logic
             cityRepository = new CityRepository();
         }
 
+        //Method to delete a city
         public BaseResponse<CityEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
 
+        //Method to get a city
         public CityEntity Get(Guid? id)
         {
             var city = new CityEntity();
@@ -39,6 +41,7 @@ namespace WeeloCore.Logic
             return city;
         }
 
+        //Method to get all system cities
         public List<CityEntity> GetAll()
         {
             var citiesEntity = new List<CityEntity>();
@@ -47,16 +50,19 @@ namespace WeeloCore.Logic
             return citiesEntity;
         }
 
+        //Method to add a city
         public BaseResponse<CityEntity> Insert(CityEntity @object)
         {
             throw new NotImplementedException();
         }
 
+        //Method to return response message
         public BaseResponse<CityEntity> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
         {
             throw new NotImplementedException();
         }
 
+        //Method to update a city
         public BaseResponse<CityEntity> Update(CityEntity @object)
         {
             throw new NotImplementedException();

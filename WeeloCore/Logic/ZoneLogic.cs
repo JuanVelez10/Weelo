@@ -10,12 +10,14 @@ using WeeloInfrastructure.Repositories;
 
 namespace WeeloCore.Logic
 {
+    //In this class all the processes associated with the zone are managed.
     public class ZoneLogic : ILogic<ZoneEntity>
     {
         private readonly IMapper mapper;
         private ZoneRepository zoneRepository;
         private CityLogic cityLogic;
 
+        //Controller
         public ZoneLogic(IMapper mapper)
         {
             this.mapper = mapper;
@@ -23,6 +25,7 @@ namespace WeeloCore.Logic
             zoneRepository = new ZoneRepository();
         }
 
+        //Method to get all a zone for city
         public List<ZoneEntity> GetAllForCity(Guid? idCity)
         {
             var zonesEntities = new List<ZoneEntity>();
@@ -34,6 +37,7 @@ namespace WeeloCore.Logic
             return zonesEntities;
         }
 
+        //Method to get a zone info
         public ZoneInfoEntity GetInfo(Guid? id)
         {
             var zoneInfoEntity = new ZoneInfoEntity();
@@ -69,11 +73,13 @@ namespace WeeloCore.Logic
             return zoneInfoEntity;
         }
 
+        //Method to delete a zone
         public BaseResponse<ZoneEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
 
+        //Method to get a zone
         public ZoneEntity Get(Guid? id)
         {
             var zone = new ZoneEntity();
@@ -85,6 +91,7 @@ namespace WeeloCore.Logic
             return zone;
         }
 
+        //Method to get all zones
         public List<ZoneEntity> GetAll()
         {
             var zonesEntity = new List<ZoneEntity>();
@@ -93,16 +100,19 @@ namespace WeeloCore.Logic
             return zonesEntity;
         }
 
+        //Method to add a zone
         public BaseResponse<ZoneEntity> Insert(ZoneEntity @object)
         {
             throw new NotImplementedException();
         }
 
+        //Method to update a zone
         public BaseResponse<ZoneEntity> Update(ZoneEntity @object)
         {
             throw new NotImplementedException();
         }
 
+        //Method to return response message
         public BaseResponse<ZoneEntity> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
         {
             throw new NotImplementedException();

@@ -8,6 +8,7 @@ using static WeeloCore.Helpers.EnumType;
 
 namespace WeeloCore.Logic
 {
+    //This interface class to inherit methods from basic to logic classes.
     public interface ILogic<TDomainObject>
     {
         public abstract List<TDomainObject> GetAll();

@@ -23,6 +23,7 @@ namespace WeeloAPI.Controllers
         private readonly IConfiguration config;
         private PropertyLogic propertyLogic;
 
+        //Controller
         public PropertyController(IMapper mapper, IConfiguration iConfig)
         {
             this.mapper = mapper;

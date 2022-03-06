@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WeeloInfrastructure.Repositories
 {
+    //This abstract base class for inheriting methods to repositories, and database connection.
     public abstract class GenericRepository<TDomainObject>
     {
         public DataBase.WeeloDBContext weeloDBContext = new DataBase.WeeloDBContext();

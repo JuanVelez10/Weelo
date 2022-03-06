@@ -17,6 +17,7 @@ namespace WeeloCore.Logic
         private AccountRepository accountRepository;
         private Tools tools;
 
+        //Controller
         public AccountLogic(IMapper mapper)
         {
             this.mapper = mapper;

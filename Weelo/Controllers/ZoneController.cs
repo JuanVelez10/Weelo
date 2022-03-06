@@ -11,6 +11,7 @@ using WeeloCore.Logic;
 
 namespace WeeloAPI.Controllers
 {
+    //In this class all the services associated with the zone are consumed
     [Route("api/[controller]")]
     [ApiController]
     public class ZoneController : ControllerBase
@@ -18,6 +19,7 @@ namespace WeeloAPI.Controllers
         private readonly IMapper mapper;
         private ZoneLogic zoneLogic;
 
+        //Controller
         public ZoneController(IMapper mapper)
         {
             this.mapper = mapper;
@@ -25,6 +27,7 @@ namespace WeeloAPI.Controllers
         }
 
         // GET: api/<ZoneController>
+        //Method to get all system zones
         [HttpGet]
         [Authorize(Roles = "Admin,Client")]
         public async Task<IActionResult> Get()

@@ -13,6 +13,7 @@ using WeeloCore.Logic;
 
 namespace WeeloAPI.Controllers
 {
+    //In this class all the services associated with the trace of property are consumed
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
@@ -21,6 +22,7 @@ namespace WeeloAPI.Controllers
         private readonly IMapper mapper;
         private PropertyTraceLogic propertyTraceLogic;
 
+        //Controller
         public PropertyTraceController(IMapper mapper)
         {
             this.mapper = mapper;
@@ -44,6 +46,7 @@ namespace WeeloAPI.Controllers
         }
 
         // POST api/<PropertyTraceController>
+        //Method to add a trace of property
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult Post([FromBody] PropertyTraceRequest propertyTraceRequest)

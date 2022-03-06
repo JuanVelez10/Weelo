@@ -10,12 +10,14 @@ using WeeloInfrastructure.Repositories;
 
 namespace WeeloCore.Logic
 {
+    //In this class all the processes associated with the state are managed.
     public class StateLogic : ILogic<StateEntity>
     {
         private readonly IMapper mapper;
         private StateRepository stateRepository;
         private CountryLogic countryLogic;
 
+        //Controller
         public StateLogic(IMapper mapper)
         {
             this.mapper = mapper;
@@ -23,11 +25,13 @@ namespace WeeloCore.Logic
             stateRepository = new StateRepository();
         }
 
+        //Method to delete a state
         public BaseResponse<StateEntity> Delete(Guid? id)
         {
             throw new NotImplementedException();
         }
 
+        //Method to get a state
         public StateEntity Get(Guid? id)
         {
             var state = new StateEntity();
@@ -39,6 +43,7 @@ namespace WeeloCore.Logic
             return state;
         }
 
+        //Method to get all states
         public List<StateEntity> GetAll()
         {
             var statesEntity = new List<StateEntity>();
@@ -47,16 +52,19 @@ namespace WeeloCore.Logic
             return statesEntity;
         }
 
+        //Method to add a state
         public BaseResponse<StateEntity> Insert(StateEntity @object)
         {
             throw new NotImplementedException();
         }
 
+        //Method to return response message
         public BaseResponse<StateEntity> MessageResponse(int code, EnumType.MessageType messageType, string additionalMessage = "")
         {
             throw new NotImplementedException();
         }
 
+        //Method to update a state
         public BaseResponse<StateEntity> Update(StateEntity @object)
         {
             throw new NotImplementedException();
