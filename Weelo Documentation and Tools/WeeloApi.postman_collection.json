@@ -1,0 +1,724 @@
+{
+	"info": {
+		"_postman_id": "af24e62f-c6a5-4b69-b291-5a2a6eaac7a0",
+		"name": "WeeloApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Account/7a5751ad-0057-48ac-b171-271ea91f0763",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Account",
+								"7a5751ad-0057-48ac-b171-271ea91f0763"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Account/",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logged",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Account/Logged",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Account",
+								"Logged"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"if (jsonData && jsonData.data.token) {    \r",
+									"    pm.globals.set(\"TOKEN\", jsonData.data.token);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Email\" : \"jadesignature@gmail.com\", \r\n  \"Password\" : \"June123+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UrlApi}}api/Account/Login",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Account",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Property",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Property/b02b4815-f0d5-480b-ac41-1883c1cdbebe",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Property",
+								"b02b4815-f0d5-480b-ac41-1883c1cdbebe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Property",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"IdCity\": \"4150a58c-a540-49e1-ae66-b43ca8908674\",\r\n  \"idZone\": \"00000000-0000-0000-0000-000000000000\",\r\n  \"yearMin\":0,\r\n  \"yearMax\": 0,\r\n  \"priceMin\": 0.0,\r\n  \"priceMax\": 0.0,\r\n  \"roomsMin\": 0,\r\n  \"roomsMax\": 0,\r\n  \"propertyType\": 0,\r\n  \"conditionType\": 0,\r\n  \"securityType\": 0,\r\n  \"areaType\": 0,\r\n  \"withFurnished\": 0,\r\n  \"withGarages\": 0,\r\n  \"withSwimmingPool\": 0,\r\n  \"withGym\": 0,\r\n  \"withOceanfront\": 0,\r\n  \"WithImages\":0,\r\n  \"OrderProperty\": 0,\r\n  \"EnabledProperty\":0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UrlApi}}api/Property/Find",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Property",
+								"Find"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\r\n  \"name\": \"House Oceanside\",\r\n  \"description\": \"This stunning ground-floor Oceanside unit on Fisher Island redefines luxury living at its finest.\",\r\n  \"address\": \"7716 FISHER ISLAND DR #7716,MIAMI,FL 33109\",\r\n  \"latitude\": 25.76,\r\n  \"longitude\": -80.14,\r\n  \"year\": 2020,\r\n  \"price\": 15000000,\r\n  \"enabled\": true,\r\n  \"propertyType\": 2,\r\n  \"conditionType\": 1,\r\n  \"securityType\": 1,\r\n  \"areaType\": 1,\r\n  \"furnished\": false,\r\n  \"rooms\": 4,\r\n  \"bathrooms\": 2,\r\n  \"totalSquareFeet\": 5100,\r\n  \"garages\": 2,\r\n  \"swimmingPool\": true,\r\n  \"gym\": true,\r\n  \"oceanfront\": true,\r\n  \"elevator\": false,\r\n  \"floor\": 1,\r\n  \"levels\": 2,\r\n  \"idZone\": \"8a0ef6db-f81b-47ac-9c56-2a94c36668bc\",\r\n  \"idOwner\": \"5af4d332-b098-4f1e-b4e6-b7def89423f5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UrlApi}}api/Property",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"83254d62-6d6b-4903-8e13-83a44b608fdc\",\r\n  \"name\": \"House Oceanside\",\r\n  \"description\": \"This stunning ground-floor Oceanside unit on Fisher Island redefines luxury living at its finest.\",\r\n  \"address\": \"7716 FISHER ISLAND DR #7716,MIAMI,FL 33109\",\r\n  \"latitude\": 25.76,\r\n  \"longitude\": -80.14,\r\n  \"year\": 2020,\r\n  \"price\": 15000000,\r\n  \"enabled\": true,\r\n  \"propertyType\": 2,\r\n  \"conditionType\": 1,\r\n  \"securityType\": 1,\r\n  \"areaType\": 1,\r\n  \"furnished\": false,\r\n  \"rooms\": 4,\r\n  \"bathrooms\": 2,\r\n  \"totalSquareFeet\": 5100,\r\n  \"garages\": 2,\r\n  \"swimmingPool\": true,\r\n  \"gym\": true,\r\n  \"oceanfront\": true,\r\n  \"elevator\": false,\r\n  \"floor\": 1,\r\n  \"levels\": 2,\r\n  \"idZone\": \"8a0ef6db-f81b-47ac-9c56-2a94c36668bc\",\r\n  \"idOwner\": \"5af4d332-b098-4f1e-b4e6-b7def89423f5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UrlApi}}api/Property",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Property/4edbde96-6546-4e4b-9b1c-0d9be702873d",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Property",
+								"4edbde96-6546-4e4b-9b1c-0d9be702873d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enable",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Property/Enable?id=b02b4815-f0d5-480b-ac41-1883c1cdbebe&enable=true",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Property",
+								"Enable"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "b02b4815-f0d5-480b-ac41-1883c1cdbebe"
+								},
+								{
+									"key": "enable",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Price",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Property/Price?id=83254d62-6d6b-4903-8e13-83a44b608fdc&price=9900000",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Property",
+								"Price"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "83254d62-6d6b-4903-8e13-83a44b608fdc"
+								},
+								{
+									"key": "price",
+									"value": "9900000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PropertyImage",
+			"item": [
+				{
+					"name": "GetAllForProperty",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/PropertyImage/Property/b02b4815-f0d5-480b-ac41-1883c1cdbebe",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"PropertyImage",
+								"Property",
+								"b02b4815-f0d5-480b-ac41-1883c1cdbebe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/JuanDavidVásquezVéle/OneDrive - Valemas S.A.S/Imágenes/26233018_10214152330857487_2245214584506176176_o.jpg"
+								},
+								{
+									"key": "id",
+									"value": "b02b4815-f0d5-480b-ac41-1883c1cdbebe",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{UrlApi}}api/PropertyImage",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"PropertyImage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enable",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/PropertyImage/Enable?id=666c07b4-d98b-4394-a231-17b9dc639aaf&enable=true",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"PropertyImage",
+								"Enable"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "666c07b4-d98b-4394-a231-17b9dc639aaf"
+								},
+								{
+									"key": "enable",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PropertyTrace",
+			"item": [
+				{
+					"name": "GetAllForProperty",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/PropertyTrace/Property/5ab2b678-8a95-439e-9ea0-e35ee58e43c8",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"PropertyTrace",
+								"Property",
+								"5ab2b678-8a95-439e-9ea0-e35ee58e43c8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": \"00000000-0000-0000-0000-000000000000\",\r\n        \"dateSale\": \"2022-03-06T14:56:24.847\",\r\n        \"name\": \"Second Sale\",\r\n        \"value\": 9000000,\r\n        \"tax\": 300000,\r\n        \"create\": \"2022-03-03T14:56:24.847\",\r\n        \"ownerOld\": \"6f11a3ba-a39b-46ce-bce5-7da8b378c885\",\r\n        \"ownerNew\": \"7a5751ad-0057-48ac-b171-271ea91f0763\",\r\n        \"IdProperty\":\"5ab2b678-8a95-439e-9ea0-e35ee58e43c8\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UrlApi}}api/PropertyTrace",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"PropertyTrace"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Zone",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Zone",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Zone"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "City",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/City",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"City"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "State",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/State",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"State"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Country",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UrlApi}}api/Country",
+							"host": [
+								"{{UrlApi}}api"
+							],
+							"path": [
+								"Country"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
