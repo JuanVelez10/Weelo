@@ -129,7 +129,8 @@
 								"Account",
 								"Login"
 							]
-						}
+						},
+						"description": "Service to login and get a token\n\n| **Request** |  |\n| --- | --- |\n| Email | Email from an existing account |\n| Password | Passwordfrom an existing account |\n\n| **Response** |  |\n| --- | --- |\n| Code | Message code |\n| Message | Message Text |\n| MessageType | Message Type |\n| Data | Result |\n| Data/Token | Login token |"
 					},
 					"response": []
 				}
@@ -210,7 +211,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"IdCity\": \"4150a58c-a540-49e1-ae66-b43ca8908674\",\r\n  \"idZone\": \"00000000-0000-0000-0000-000000000000\",\r\n  \"yearMin\":0,\r\n  \"yearMax\": 0,\r\n  \"priceMin\": 0.0,\r\n  \"priceMax\": 0.0,\r\n  \"roomsMin\": 0,\r\n  \"roomsMax\": 0,\r\n  \"propertyType\": 0,\r\n  \"conditionType\": 0,\r\n  \"securityType\": 0,\r\n  \"areaType\": 0,\r\n  \"withFurnished\": 0,\r\n  \"withGarages\": 0,\r\n  \"withSwimmingPool\": 0,\r\n  \"withGym\": 0,\r\n  \"withOceanfront\": 0,\r\n  \"WithImages\":0,\r\n  \"OrderProperty\": 0,\r\n  \"EnabledProperty\":0\r\n}",
+							"raw": "{\r\n  \"IdCity\": \"4150a58c-a540-49e1-ae66-b43ca8908674\",\r\n  \"idZone\": null,\r\n  \"yearMin\":0,\r\n  \"yearMax\": 0,\r\n  \"priceMin\": 0.0,\r\n  \"priceMax\": 0.0,\r\n  \"roomsMin\": 0,\r\n  \"roomsMax\": 0,\r\n  \"propertyType\": 0,\r\n  \"conditionType\": 0,\r\n  \"securityType\": 0,\r\n  \"areaType\": 0,\r\n  \"withFurnished\": 0,\r\n  \"withGarages\": 0,\r\n  \"withSwimmingPool\": 0,\r\n  \"withGym\": 0,\r\n  \"withOceanfront\": 0,\r\n  \"WithImages\":0,\r\n  \"OrderProperty\": 0,\r\n  \"EnabledProperty\":0,\r\n  \"Page\":0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -226,7 +227,8 @@
 								"Property",
 								"Find"
 							]
-						}
+						},
+						"description": "Service to bring list with filters, some ordering and by pagination.\n\n| **Request** |  |\n| --- | --- |\n| IdCity | id city required |\n| idZone | id city not required |\n| yearMin | minimum search year |\n| yearMax | maximum search year |\n| priceMin | minimum search price |\n| priceMax | maximum search price |\n| roomsMin | minimum search rooms |\n| roomsMax | maximum search rooms |\n| propertyType | None = 0,  <br>Apartment = 1,  <br>House = 2,  <br>Farm = 3,  <br>Local = 4,  <br>Office = 5 |\n| conditionType | None = 0,  <br>Resale = 1,  <br>Built = 2,  <br>New = 3 |\n| securityType | None = 0,  <br>Good = 1,  <br>Medium = 2,  <br>Low = 3 |\n| areaType | None = 0,  <br>Residential = 1,  <br>Urban = 2,  <br>Rural = 3 |\n| withFurnished  <br>withGarages  <br>withSwimmingPool  <br>withGym  <br>withOceanfront  <br>EnabledProperty | NotWith = 2,  <br>With = 1,  <br>Both = 0 |\n| OrderProperty | None = 0,  <br>PriceMin = 1,  <br>PriceMax = 2,  <br>YearMax = 3 |\n| Page | Page number brings 10 items |"
 					},
 					"response": []
 				},
@@ -247,7 +249,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\r\n  \"name\": \"House Oceanside\",\r\n  \"description\": \"This stunning ground-floor Oceanside unit on Fisher Island redefines luxury living at its finest.\",\r\n  \"address\": \"7716 FISHER ISLAND DR #7716,MIAMI,FL 33109\",\r\n  \"latitude\": 25.76,\r\n  \"longitude\": -80.14,\r\n  \"year\": 2020,\r\n  \"price\": 15000000,\r\n  \"enabled\": true,\r\n  \"propertyType\": 2,\r\n  \"conditionType\": 1,\r\n  \"securityType\": 1,\r\n  \"areaType\": 1,\r\n  \"furnished\": false,\r\n  \"rooms\": 4,\r\n  \"bathrooms\": 2,\r\n  \"totalSquareFeet\": 5100,\r\n  \"garages\": 2,\r\n  \"swimmingPool\": true,\r\n  \"gym\": true,\r\n  \"oceanfront\": true,\r\n  \"elevator\": false,\r\n  \"floor\": 1,\r\n  \"levels\": 2,\r\n  \"idZone\": \"8a0ef6db-f81b-47ac-9c56-2a94c36668bc\",\r\n  \"idOwner\": \"5af4d332-b098-4f1e-b4e6-b7def89423f5\"\r\n}",
+							"raw": "{\r\n  \"id\": \"00000000-0000-0000-0000-000000000000\",\r\n  \"name\": \"House Oceanside 10\",\r\n  \"description\": \"This stunning ground-floor Oceanside unit on Fisher Island redefines luxury living at its finest.\",\r\n  \"address\": \"7735 FISHER ISLAND DR #7716,MIAMI,FL 33109\",\r\n  \"latitude\": 25.76,\r\n  \"longitude\": -80.14,\r\n  \"year\": 2020,\r\n  \"price\": 14000000,\r\n  \"enabled\": true,\r\n  \"propertyType\": 2,\r\n  \"conditionType\": 1,\r\n  \"securityType\": 1,\r\n  \"areaType\": 1,\r\n  \"furnished\": false,\r\n  \"rooms\": 4,\r\n  \"bathrooms\": 2,\r\n  \"totalSquareFeet\": 5100,\r\n  \"garages\": 2,\r\n  \"swimmingPool\": true,\r\n  \"gym\": true,\r\n  \"oceanfront\": true,\r\n  \"elevator\": false,\r\n  \"floor\": 1,\r\n  \"levels\": 2,\r\n  \"idZone\": \"8a0ef6db-f81b-47ac-9c56-2a94c36668bc\",\r\n  \"idOwner\": \"5af4d332-b098-4f1e-b4e6-b7def89423f5\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -478,7 +480,8 @@
 							"path": [
 								"PropertyImage"
 							]
-						}
+						},
+						"description": "Method to upload an image to a property\n\n| **Request** |  |\n| --- | --- |\n| image | Image File |\n| id | Id of Property |\n\n| **Response** |  |\n| --- | --- |\n| Code | Message code |\n| Message | Message Text |\n| MessageType | Message Type |\n| Data | Result |\n| Data/url | url of image |"
 					},
 					"response": []
 				},
